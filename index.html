@@ -39,3 +39,245 @@
   .section-header { 
     display:flex; justify-content:space-between; align-items:center; 
     margin-bottom:15px;
+  }
+  .section-header h3 { font-size:1.2rem; }
+  
+  .grid { 
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); 
+    gap:12px; 
+  }
+  .card { 
+    background:#1a1a1a; border-radius:10px; overflow:hidden; 
+    cursor:pointer; transition:0.2s; position:relative;
+  }
+  .card:hover { transform:scale(1.05); }
+  .card img { width:100%; height:150px; object-fit:cover; }
+  .card .badge { 
+    position:absolute; background:#000; color:#b8ff00; 
+    padding:2px 6px; font-size:0.7rem; font-weight:700; 
+    margin:5px; border-radius:4px; z-index:2;
+  }
+  .card p { 
+    padding:8px; font-size:0.8rem; white-space:nowrap; 
+    overflow:hidden; text-overflow:ellipsis; 
+  }
+  
+  .bottom-nav { 
+    position:fixed; bottom:0; left:0; right:0; 
+    background:#1a1a1a; display:flex; justify-content:space-around; 
+    padding:10px 0; border-top:1px solid #2a2a2a; z-index:10;
+  }
+  .nav-item { 
+    text-align:center; color:#666; font-size:0.75rem; 
+    cursor:pointer; text-decoration:none;
+  }
+  .nav-item.active { color:#b8ff00; }
+  .nav-item svg { width:24px; height:24px; margin-bottom:3px; }
+  
+  .offline-banner { 
+    background:#ff4757; padding:10px; text-align:center; 
+    display:none; font-size:0.85rem;
+  }
+  .offline-banner.show { display:block; }
+  
+  .player-modal {
+    display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.95); z-index:100; padding:20px;
+    align-items:center; justify-content:center;
+  }
+  .player-modal.show { display:flex; }
+  .player-content {
+    width:100%; max-width:900px; background:#000; border-radius:12px;
+    overflow:hidden;
+  }
+  .player-content iframe { width:100%; height:500px; border:none; display:block; }
+  .player-header {
+    padding:15px; display:flex; justify-content:space-between; align-items:center;
+    background:#1a1a1a;
+  }
+  .player-header h3 { font-size:1.1rem; }
+  .close-btn {
+    background:none; border:none; color:#fff; font-size:1.5rem;
+    cursor:pointer; padding:0 10px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="#b8ff00"><path d="M13 3L4 14h5l-1 7 9-11h-5l1-7z"/></svg>
+    <span>BF <span class="accent">TV</span></span>
+  </div>
+</header>
+
+<div class="tabs">
+  <a class="active">Home</a>
+  <a onclick="scrollToSection('world')">World Docs</a>
+  <a onclick="scrollToSection('movies')">Movies</a>
+  <a onclick="scrollToSection('cartoons')">Cartoons</a>
+  <a onclick="scrollToSection('games')">Games</a>
+</div>
+
+<div class="offline-banner" id="offlineBanner">
+  ⚠️ Network is down. Playing offline content.
+</div>
+
+<div id="homeSection">
+  <div class="hero">
+    <div class="hero-card">
+      <img src="https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg" alt="Kruger National Park">
+      <div class="hero-info">
+        <h2>SA Wildlife Documentary</h2>
+        <p>Creative Commons • YouTube</p>
+        <button class="btn-watch" onclick="playVideo('youtube', 'M7lc1UVf-VE', 'SA Wildlife Documentary')">WATCH NOW</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="world">
+    <div class="section-header"><h3>🌍 World Documentaries</h3></div>
+    <div class="grid" id="worldGrid"></div>
+  </div>
+
+  <div class="section" id="movies">
+    <div class="section-header"><h3>Classic Movies</h3></div>
+    <div class="grid" id="moviesGrid"></div>
+  </div>
+
+  <div class="section" id="cartoons">
+    <div class="section-header"><h3>Cartoons & Classics</h3></div>
+    <div class="grid" id="cartoonsGrid"></div>
+  </div>
+
+  <div class="section" id="games">
+    <div class="section-header"><h3>Offline Games</h3></div>
+    <div class="grid" id="gamesGrid"></div>
+  </div>
+</div>
+
+<!-- Video Player Modal -->
+<div class="player-modal" id="playerModal">
+  <div class="player-content">
+    <div class="player-header">
+      <h3 id="playerTitle">Now Playing</h3>
+      <button class="close-btn" onclick="closePlayer()">×</button>
+    </div>
+    <iframe id="videoPlayer" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <div>Home</div>
+  </a>
+  <a class="nav-item" onclick="scrollToSection('world')">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6z"/></svg>
+    <div>World</div>
+  </a>
+  <a class="nav-item" onclick="scrollToSection('movies')">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4l-8 8-8-8v16h16V4z"/></svg>
+    <div>Movies</div>
+  </a>
+  <a class="nav-item" onclick="scrollToSection('games')">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"/></svg>
+    <div>Games</div>
+  </a>
+</nav>
+
+<script>
+const worldContent = [
+  { title: "SA Wildlife", img: "https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg", type: "youtube", id: "M7lc1UVf-VE", badge:"SA" },
+  { title: "Grand Canyon", img: "https://img.youtube.com/vi/LAr6oAKieHk/hqdefault.jpg", type: "youtube", id: "LAr6oAKieHk", badge:"USA" },
+  { title: "Tokyo 1964 Olympics", img: "https://img.youtube.com/vi/3v5VQmWj3uM/hqdefault.jpg", type: "youtube", id: "3v5VQmWj3uM", badge:"Japan" },
+  { title: "London 1927", img: "https://img.youtube.com/vi/1dIZ9T1PbPw/hqdefault.jpg", type: "youtube", id: "1dIZ9T1PbPw", badge:"UK" },
+  { title: "Amazon Rainforest", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"Brazil" },
+  { title: "Egypt Pyramids", img: "https://img.youtube.com/vi/7yXCdLBVMWg/hqdefault.jpg", type: "youtube", id: "7yXCdLBVMWg", badge:"Egypt" }
+];
+
+const movies = [
+  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", type: "archive", id: "NightoftheLivingDead", badge:"Horror" },
+  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", type: "archive", id: "great_train_robbery", badge:"Western" },
+  { title: "Metropolis", img: "https://archive.org/services/img/metropolis1927", type: "archive", id: "metropolis1927", badge:"Sci-Fi" },
+  { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", type: "archive", id: "nosferatu", badge:"Horror" },
+  { title: "Charlie Chaplin", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy" }
+];
+
+const cartoons = [
+  { title: "Steamboat Willie", img: "https://archive.org/services/img/Steamboat_Willie", type: "archive", id: "Steamboat_Willie", badge:"Mickey" },
+  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", type: "archive", id: "felix-the-cat-public-domain", badge:"Silent" },
+  { title: "Betty Boop Snow White", img: "https://archive.org/services/img/Betty_Boop_Snow_White", type: "archive", id: "Betty_Boop_Snow_White", badge:"1930s" },
+  { title: "Public Domain Cartoons", img: "https://img.youtube.com/vi/4KNaApJCWEU/hqdefault.jpg", type: "youtube", id: "4KNaApJCWEU", badge:"Cartoon" }
+];
+
+const games = [
+  { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", url:"https://play2048.co/", badge:"Puzzle" },
+  { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", url:"https://playsnake.org/", badge:"Arcade" },
+  { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", url:"https://playtictactoe.org/", badge:"Strategy" },
+  { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", url:"https://www.chess.com/play/online", badge:"Board" }
+];
+
+function loadGrid(id, items, type) {
+  const grid = document.getElementById(id);
+  grid.innerHTML = '';
+  items.forEach(item => {
+    const onclick = type === 'game' 
+      ? `window.open('${item.url}', '_blank')` 
+      : `playVideo('${item.type}', '${item.id}', '${item.title}')`;
+    
+    grid.innerHTML += `
+      <div class="card" onclick="${onclick}">
+        <div style="position:relative;">
+          <span class="badge">${item.badge}</span>
+          <img src="${item.img}" alt="${item.title}">
+        </div>
+        <p>${item.title}</p>
+      </div>
+    `;
+  });
+}
+
+function playVideo(type, id, title) {
+  const modal = document.getElementById('playerModal');
+  const player = document.getElementById('videoPlayer');
+  document.getElementById('playerTitle').textContent = title;
+  
+  if(type === 'archive') {
+    player.src = `https://archive.org/embed/${id}`;
+  } else if(type === 'youtube') {
+    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+  }
+  
+  modal.classList.add('show');
+}
+
+function closePlayer() {
+  const modal = document.getElementById('playerModal');
+  const player = document.getElementById('videoPlayer');
+  player.src = '';
+  modal.classList.remove('show');
+}
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// Load content
+loadGrid('worldGrid', worldContent, 'video');
+loadGrid('moviesGrid', movies, 'video');
+loadGrid('cartoonsGrid', cartoons, 'video');
+loadGrid('gamesGrid', games, 'game');
+
+// Offline detection
+window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
+window.addEventListener('online', () => document.getElementById('offlineBanner').classList.remove('show'));
+
+// Close player on ESC
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') closePlayer();
+});
+</script>
+
+</body>
+</html>
