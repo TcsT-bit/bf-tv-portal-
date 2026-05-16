@@ -3,56 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BF TV - Free Movies & Shows</title>
+<title>BF TV - Free Streaming</title>
 <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
-  body { background:#0f1115; color:#fff; }
-  header { background:linear-gradient(90deg,#00d4ff,#0099ff); padding:15px; text-align:center; }
-  header h1 { color:#fff; font-size:1.6rem; font-weight:800; letter-spacing:1px; }
-  .offline-banner { background:#ff4757; padding:10px; text-align:center; display:none; }
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
+  body { background:#0d0d0d; color:#fff; padding-bottom:70px; }
+  
+  /* Top Header */
+  header { 
+    display:flex; align-items:center; justify-content:space-between; 
+    padding:15px 20px; background:#0d0d0d; position:sticky; top:0; z-index:10;
+  }
+  .logo { display:flex; align-items:center; gap:8px; font-size:1.4rem; font-weight:800; }
+  .logo svg { width:28px; height:28px; }
+  .logo span { color:#fff; }
+  .logo .accent { color:#b8ff00; }
+  
+  /* Tabs */
+  .tabs { display:flex; gap:25px; padding:0 20px 15px; border-bottom:1px solid #1a1a1a; }
+  .tabs a { color:#888; text-decoration:none; font-weight:600; font-size:0.95rem; }
+  .tabs a.active { color:#fff; }
+  
+  /* Hero Section */
+  .hero { padding:20px; }
+  .hero-card { 
+    position:relative; border-radius:16px; overflow:hidden; 
+    background:#1a1a1a; cursor:pointer;
+  }
+  .hero-card img { width:100%; height:280px; object-fit:cover; }
+  .hero-info { padding:15px; text-align:center; }
+  .hero-info h2 { font-size:1.5rem; margin-bottom:5px; }
+  .hero-info p { color:#aaa; font-size:0.85rem; margin-bottom:15px; }
+  .btn-watch { 
+    background:#b8ff00; color:#000; border:none; 
+    padding:12px 40px; border-radius:8px; font-weight:800; 
+    font-size:1rem; cursor:pointer; width:100%;
+  }
+  
+  /* Section Headers */
+  .section { padding:20px; }
+  .section-header { 
+    display:flex; justify-content:space-between; align-items:center; 
+    margin-bottom:15px;
+  }
+  .section-header h3 { font-size:1.2rem; }
+  .section-header a { color:#b8ff00; text-decoration:none; font-size:0.9rem; }
+  
+  /* Grid */
+  .grid { 
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); 
+    gap:12px; 
+  }
+  .card { 
+    background:#1a1a1a; border-radius:10px; overflow:hidden; 
+    cursor:pointer; transition:0.2s;
+  }
+  .card:hover { transform:scale(1.05); }
+  .card img { width:100%; height:150px; object-fit:cover; }
+  .card .badge { 
+    position:absolute; background:#000; color:#b8ff00; 
+    padding:2px 6px; font-size:0.7rem; font-weight:700; 
+    margin:5px; border-radius:4px;
+  }
+  .card p { 
+    padding:8px; font-size:0.8rem; white-space:nowrap; 
+    overflow:hidden; text-overflow:ellipsis; 
+  }
+  
+  /* Bottom Nav */
+  .bottom-nav { 
+    position:fixed; bottom:0; left:0; right:0; 
+    background:#1a1a1a; display:flex; justify-content:space-around; 
+    padding:10px 0; border-top:1px solid #2a2a2a;
+  }
+  .nav-item { 
+    text-align:center; color:#666; font-size:0.75rem; 
+    cursor:pointer; text-decoration:none;
+  }
+  .nav-item.active { color:#b8ff00; }
+  .nav-item svg { width:24px; height:24px; margin-bottom:3px; }
+  
+  .offline-banner { 
+    background:#ff4757; padding:10px; text-align:center; 
+    display:none; font-size:0.85rem;
+  }
   .offline-banner.show { display:block; }
-  .hero { padding:25px 20px; text-align:center; }
-  .hero h2 { margin-bottom:10px; font-size:1.4rem; }
-  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:15px; padding:20px; }
-  .card { background:#1c1f26; border-radius:12px; overflow:hidden; cursor:pointer; transition:0.2s; }
-  .card img { width:100%; height:180px; object-fit:cover; }
-  .card p { padding:10px; font-size:0.9rem; }
-  .ads { background:#2f3542; margin:20px; padding:15px; border-radius:12px; text-align:center; border:1px solid #00d4ff; }
-  .btn { background:#00d4ff; color:#000; padding:12px 20px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; margin:10px; }
-  footer { text-align:center; padding:20px; font-size:0.8rem; color:#aaa; }
 </style>
 </head>
 <body>
+
 <header>
-  <h1>BF TV</h1>
-  <span>Powered by Wireless Solutions BF</span>
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="#b8ff00"><path d="M13 3L4 14h5l-1 7 9-11h-5l1-7z"/></svg>
+    <span>BF <span class="accent">TV</span></span>
+  </div>
+  <div style="display:flex; gap:20px;">
+    <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    <svg width="24" height="24" fill="#fff" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+  </div>
 </header>
+
+<div class="tabs">
+  <a href="#" class="active">Trending</a>
+  <a href="#">Popular</a>
+  <a href="#">Movies</a>
+  <a href="#">TV Series</a>
+</div>
+
 <div class="offline-banner" id="offlineBanner">
-  ⚠️ Network is down. Enjoy offline movies & games below.
+  ⚠️ Network is down. Playing offline content.
 </div>
+
 <div class="hero">
-  <h2>Watch Free Movies & Series</h2>
-  <p>100% Legal. No data cost. Works even during outages.</p>
-  <button class="btn" onclick="trackUpgradeClick()">Upgrade Your Package</button>
+  <div class="hero-card">
+    <img src="https://m.media-amazon.com/images/MV5BMTY3ODk5Nzc0NV5BMl5BanBnXkFtZTgwMjc2MDQzMDI@._V1_.jpg" alt="One Piece">
+    <div class="hero-info">
+      <h2>One Piece</h2>
+      <p>TV Series • Action & Adventure, Sci-Fi & Fantasy</p>
+      <button class="btn-watch" onclick="alert('Opening player...')">WATCH NOW</button>
+    </div>
+  </div>
 </div>
-<div class="ads">
-  <p><strong>Advertise on BF TV</strong></p>
-  <p>Reach 1000+ local clients. Call 079 XXXX</p>
+
+<div class="section">
+  <div class="section-header">
+    <h3>Trending Movies</h3>
+    <a href="#">View all</a>
+  </div>
+  <div class="grid" id="moviesGrid"></div>
 </div>
-<div class="grid" id="movieGrid"></div>
-<footer>
-  <p>Support: 079 XXXX | BF TV v1.0</p>
-</footer>
-<script type="module">
+
+<div class="section">
+  <div class="section-header">
+    <h3>Cartoons & Anime</h3>
+    <a href="#">View all</a>
+  </div>
+  <div class="grid" id="cartoonsGrid"></div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <h3>Offline Games</h3>
+    <a href="#">View all</a>
+  </div>
+  <div class="grid" id="gamesGrid"></div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="#" class="nav-item active">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    <div>Home</div>
+  </a>
+  <a href="#" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4l-8 8-8-8v16h16V4z"/></svg>
+    <div>Movies</div>
+  </a>
+  <a href="#" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+    <div>TV Series</div>
+  </a>
+  <a href="#" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+    <div>Watch List</div>
+  </a>
+  <a href="#" class="nav-item">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"/></svg>
+    <div>More</div>
+  </a>
+</nav>
+
+<script>
 const movies = [
-  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead" },
-  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery" }
+  { title: "The Punisher", img: "https://m.media-amazon.com/images/MV5BMTQ3NTQyNDM5OF5BMl5BanBnXkFtZTgwOTQwNDY1MDI@._V1_.jpg", badge:"FHD" },
+  { title: "Berlin", img: "https://m.media-amazon.com/images/MV5BN2Q3NjEwZjYtZGRjYy00NjM4LWEzZTMtNDg0NDExMDM5ZDdhXkEyXkFqcGdeQXVyMTEyMjM2NDc2._V1_.jpg", badge:"FHD" },
+  { title: "The Wonderfools", img: "https://m.media-amazon.com/images/M/MV5BMjA3NzY1MjE3Nl5BMl5BanBnXkFtZTgwNjE1MTE3MjE@._V1_.jpg", badge:"HD" },
+  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", badge:"FHD" }
 ];
-const grid = document.getElementById('movieGrid');
-movies.forEach(m => {
-  grid.innerHTML += `<div class="card"><img src="${m.img}"><p>${m.title}</p></div>`;
-});
-window.trackUpgradeClick = () => alert("Redirecting to upgrade page...");
+
+const cartoons = [
+  { title: "Tom & Jerry", img: "https://archive.org/services/img/tom-and-jerry-public-domain", badge:"HD" },
+  { title: "Popeye", img: "https://archive.org/services/img/popeye-public-domain", badge:"SD" },
+  { title: "Looney Tunes", img: "https://archive.org/services/img/looney-tunes-public-domain", badge:"HD" },
+  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", badge:"SD" }
+];
+
+const games = [
+  { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", badge:"Offline" },
+  { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", badge:"Offline" },
+  { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", badge:"Offline" },
+  { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", badge:"Offline" }
+];
+
+function loadGrid(id, items) {
+  const grid = document.getElementById(id);
+  items.forEach(item => {
+    grid.innerHTML += `
+      <div class="card" onclick="alert('Playing ${item.title}...')">
+        <div style="position:relative;">
+          <span class="badge">${item.badge}</span>
+          <img src="${item.img}" alt="${item.title}">
+        </div>
+        <p>${item.title}</p>
+      </div>
+    `;
+  });
+}
+
+loadGrid('moviesGrid', movies);
+loadGrid('cartoonsGrid', cartoons);
+loadGrid('gamesGrid', games);
+
+// Offline detection
+window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
+window.addEventListener('online', () => document.getElementById('offlineBanner').classList.remove('show'));
 </script>
+
 </body>
 </html>
