@@ -16,8 +16,8 @@
   .logo svg { width:28px; height:28px; }
   .logo .accent { color:#b8ff00; }
   
-  .tabs { display:flex; gap:25px; padding:0 20px 15px; border-bottom:1px solid #1a1a1a; }
-  .tabs a { color:#888; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; }
+  .tabs { display:flex; gap:25px; padding:0 20px 15px; border-bottom:1px solid #1a1a1a; overflow-x:auto; }
+  .tabs a { color:#888; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; white-space:nowrap; }
   .tabs a.active { color:#fff; }
   
   .hero { padding:20px; }
@@ -80,7 +80,6 @@
   }
   .offline-banner.show { display:block; }
   
-  /* Video Player Modal */
   .player-modal {
     display:none; position:fixed; top:0; left:0; right:0; bottom:0;
     background:rgba(0,0,0,0.95); z-index:100; padding:20px;
@@ -113,10 +112,11 @@
 </header>
 
 <div class="tabs">
-  <a class="active" onclick="showSection('home')">Home</a>
-  <a onclick="showSection('movies')">Movies</a>
-  <a onclick="showSection('cartoons')">Cartoons</a>
-  <a onclick="showSection('games')">Games</a>
+  <a class="active">Home</a>
+  <a onclick="scrollToSection('world')">World Docs</a>
+  <a onclick="scrollToSection('movies')">Movies</a>
+  <a onclick="scrollToSection('cartoons')">Cartoons</a>
+  <a onclick="scrollToSection('games')">Games</a>
 </div>
 
 <div class="offline-banner" id="offlineBanner">
@@ -126,26 +126,31 @@
 <div id="homeSection">
   <div class="hero">
     <div class="hero-card">
-      <img src="https://archive.org/services/img/NightoftheLivingDead" alt="Night of the Living Dead">
+      <img src="https://archive.org/services/img/kruger_national_park" alt="Kruger National Park">
       <div class="hero-info">
-        <h2>Night of the Living Dead</h2>
-        <p>1968 • Horror • Public Domain</p>
-        <button class="btn-watch" onclick="playVideo('https://archive.org/download/NightoftheLivingDead/NightoftheLivingDead_512kb.mp4', 'Night of the Living Dead')">WATCH NOW</button>
+        <h2>Kruger National Park</h2>
+        <p>Wildlife Documentary • South Africa</p>
+        <button class="btn-watch" onclick="playVideo('https://archive.org/download/kruger_national_park/kruger_512kb.mp4', 'Kruger National Park')">WATCH NOW</button>
       </div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-header"><h3>Trending Movies</h3></div>
+  <div class="section" id="world">
+    <div class="section-header"><h3>🌍 World Documentaries</h3></div>
+    <div class="grid" id="worldGrid"></div>
+  </div>
+
+  <div class="section" id="movies">
+    <div class="section-header"><h3>Classic Movies</h3></div>
     <div class="grid" id="moviesGrid"></div>
   </div>
 
-  <div class="section">
+  <div class="section" id="cartoons">
     <div class="section-header"><h3>Cartoons & Classics</h3></div>
     <div class="grid" id="cartoonsGrid"></div>
   </div>
 
-  <div class="section">
+  <div class="section" id="games">
     <div class="section-header"><h3>Offline Games</h3></div>
     <div class="grid" id="gamesGrid"></div>
   </div>
@@ -163,44 +168,123 @@
 </div>
 
 <nav class="bottom-nav">
-  <a class="nav-item active" onclick="showSection('home')">
+  <a class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     <div>Home</div>
   </a>
-  <a class="nav-item" onclick="showSection('movies')">
+  <a class="nav-item" onclick="scrollToSection('world')">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6z"/></svg>
+    <div>World</div>
+  </a>
+  <a class="nav-item" onclick="scrollToSection('movies')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4l-8 8-8-8v16h16V4z"/></svg>
     <div>Movies</div>
   </a>
-  <a class="nav-item" onclick="showSection('cartoons')">
-    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
-    <div>Cartoons</div>
-  </a>
-  <a class="nav-item" onclick="showSection('games')">
+  <a class="nav-item" onclick="scrollToSection('games')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"/></svg>
     <div>Games</div>
   </a>
 </nav>
 
 <script>
+const worldContent = [
+  { 
+    title: "Kruger National Park", 
+    img: "https://archive.org/services/img/kruger_national_park", 
+    video: "https://archive.org/download/kruger_national_park/kruger_512kb.mp4", 
+    badge:"SA" 
+  },
+  { 
+    title: "Grand Canyon", 
+    img: "https://archive.org/services/img/grand_canyon_doc", 
+    video: "https://archive.org/download/grand_canyon_doc/canyon_512kb.mp4", 
+    badge:"USA" 
+  },
+  { 
+    title: "Tokyo 1960s", 
+    img: "https://archive.org/services/img/tokyo_1960s", 
+    video: "https://archive.org/download/tokyo_1960s/tokyo_512kb.mp4", 
+    badge:"Japan" 
+  },
+  { 
+    title: "London 1920s", 
+    img: "https://archive.org/services/img/london_1920s", 
+    video: "https://archive.org/download/london_1920s/london_512kb.mp4", 
+    badge:"UK" 
+  },
+  { 
+    title: "Amazon Rainforest", 
+    img: "https://archive.org/services/img/amazon_rainforest", 
+    video: "https://archive.org/download/amazon_rainforest/amazon_512kb.mp4", 
+    badge:"Brazil" 
+  },
+  { 
+    title: "Egypt Pyramids", 
+    img: "https://archive.org/services/img/egypt_pyramids_doc", 
+    video: "https://archive.org/download/egypt_pyramids_doc/egypt_512kb.mp4", 
+    badge:"Egypt" 
+  },
+  { 
+    title: "Paris 1930s", 
+    img: "https://archive.org/services/img/paris_1930s", 
+    video: "https://archive.org/download/paris_1930s/paris_512kb.mp4", 
+    badge:"France" 
+  },
+  { 
+    title: "Great Wall China", 
+    img: "https://archive.org/services/img/great_wall_china", 
+    video: "https://archive.org/download/great_wall_china/wall_512kb.mp4", 
+    badge:"China" 
+  },
+  { 
+    title: "Sahara Desert", 
+    img: "https://archive.org/services/img/sahara_desert_doc", 
+    video: "https://archive.org/download/sahara_desert_doc/sahara_512kb.mp4", 
+    badge:"Africa" 
+  },
+  { 
+    title: "Venice 1950s", 
+    img: "https://archive.org/services/img/venice_1950s", 
+    video: "https://archive.org/download/venice_1950s/venice_512kb.mp4", 
+    badge:"Italy" 
+  },
+  { 
+    title: "Australian Outback", 
+    img: "https://archive.org/services/img/australian_outback", 
+    video: "https://archive.org/download/australian_outback/outback_512kb.mp4", 
+    badge:"Australia" 
+  },
+  { 
+    title: "Alps Mountains", 
+    img: "https://archive.org/services/img/alps_mountains_doc", 
+    video: "https://archive.org/download/alps_mountains_doc/alps_512kb.mp4", 
+    badge:"Europe" 
+  }
+];
+
 const movies = [
-  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", video: "https://archive.org/download/NightoftheLivingDead/NightoftheLivingDead_512kb.mp4", badge:"FHD" },
-  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", video: "https://archive.org/download/great_train_robbery/great_train_robbery_512kb.mp4", badge:"HD" },
-  { title: "Metropolis", img: "https://archive.org/services/img/metropolis1927", video: "https://archive.org/download/metropolis1927/Metropolis_512kb.mp4", badge:"FHD" },
-  { title: "Charade", img: "https://archive.org/services/img/Charade_512", video: "https://archive.org/download/Charade_512/Charade_512kb.mp4", badge:"HD" }
+  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", video: "https://archive.org/download/NightoftheLivingDead/NightoftheLivingDead_512kb.mp4", badge:"Horror" },
+  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", video: "https://archive.org/download/great_train_robbery/great_train_robbery_512kb.mp4", badge:"Western" },
+  { title: "Metropolis", img: "https://archive.org/services/img/metropolis1927", video: "https://archive.org/download/metropolis1927/Metropolis_512kb.mp4", badge:"Sci-Fi" },
+  { title: "Charade", img: "https://archive.org/services/img/Charade_512", video: "https://archive.org/download/Charade_512/Charade_512kb.mp4", badge:"Thriller" },
+  { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", video: "https://archive.org/download/nosferatu/nosferatu_512kb.mp4", badge:"Horror" },
+  { title: "The General", img: "https://archive.org/services/img/the_general", video: "https://archive.org/download/the_general/general_512kb.mp4", badge:"Comedy" }
 ];
 
 const cartoons = [
-  { title: "Steamboat Willie", img: "https://archive.org/services/img/Steamboat_Willie", video: "https://archive.org/download/Steamboat_Willie/Steamboat_Willie_512kb.mp4", badge:"HD" },
-  { title: "Popeye - I Yam What I Yam", img: "https://archive.org/services/img/popeye_I_Yam_What_I_Yam", video: "https://archive.org/download/popeye_I_Yam_What_I_Yam/popeye_I_Yam_What_I_Yam_512kb.mp4", badge:"SD" },
-  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", video: "https://archive.org/download/felix-the-cat-public-domain/felix_512kb.mp4", badge:"SD" },
-  { title: "Betty Boop", img: "https://archive.org/services/img/Betty_Boop_Snow_White", video: "https://archive.org/download/Betty_Boop_Snow_White/Betty_Boop_Snow_White_512kb.mp4", badge:"HD" }
+  { title: "Steamboat Willie", img: "https://archive.org/services/img/Steamboat_Willie", video: "https://archive.org/download/Steamboat_Willie/Steamboat_Willie_512kb.mp4", badge:"Mickey" },
+  { title: "Popeye - I Yam What I Yam", img: "https://archive.org/services/img/popeye_I_Yam_What_I_Yam", video: "https://archive.org/download/popeye_I_Yam_What_I_Yam/popeye_I_Yam_What_I_Yam_512kb.mp4", badge:"Classic" },
+  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", video: "https://archive.org/download/felix-the-cat-public-domain/felix_512kb.mp4", badge:"Silent" },
+  { title: "Betty Boop", img: "https://archive.org/services/img/Betty_Boop_Snow_White", video: "https://archive.org/download/Betty_Boop_Snow_White/Betty_Boop_Snow_White_512kb.mp4", badge:"1930s" },
+  { title: "Looney Tunes", img: "https://archive.org/services/img/looney_tunes_public", video: "https://archive.org/download/looney_tunes_public/looney_512kb.mp4", badge:"Cartoon" },
+  { title: "Tom & Jerry", img: "https://archive.org/services/img/tom_jerry_public", video: "https://archive.org/download/tom_jerry_public/tomjerry_512kb.mp4", badge:"Classic" }
 ];
 
 const games = [
-  { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", url:"https://play2048.co/", badge:"Offline" },
-  { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", url:"https://playsnake.org/", badge:"Offline" },
-  { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", url:"https://playtictactoe.org/", badge:"Offline" },
-  { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", url:"https://www.chess.com/play/online", badge:"Offline" }
+  { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", url:"https://play2048.co/", badge:"Puzzle" },
+  { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", url:"https://playsnake.org/", badge:"Arcade" },
+  { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", url:"https://playtictactoe.org/", badge:"Strategy" },
+  { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", url:"https://www.chess.com/play/online", badge:"Board" }
 ];
 
 function loadGrid(id, items, type) {
@@ -240,15 +324,12 @@ function closePlayer() {
   modal.classList.remove('show');
 }
 
-function showSection(section) {
-  document.querySelectorAll('.nav-item, .tabs a').forEach(el => el.classList.remove('active'));
-  event.target.classList.add('active');
-  
-  // For now, all content is on home. You can split into separate pages later
-  document.getElementById('homeSection').scrollIntoView({behavior:'smooth'});
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
 }
 
 // Load content
+loadGrid('worldGrid', worldContent, 'video');
 loadGrid('moviesGrid', movies, 'video');
 loadGrid('cartoonsGrid', cartoons, 'video');
 loadGrid('gamesGrid', games, 'game');
