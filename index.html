@@ -90,7 +90,7 @@
     width:100%; max-width:900px; background:#000; border-radius:12px;
     overflow:hidden;
   }
-  .player-content video { width:100%; display:block; }
+  .player-content iframe { width:100%; height:500px; border:none; display:block; }
   .player-header {
     padding:15px; display:flex; justify-content:space-between; align-items:center;
     background:#1a1a1a;
@@ -130,7 +130,7 @@
       <div class="hero-info">
         <h2>Kruger National Park</h2>
         <p>Wildlife Documentary • South Africa</p>
-        <button class="btn-watch" onclick="playVideo('https://archive.org/download/kruger_national_park/kruger_512kb.mp4', 'Kruger National Park')">WATCH NOW</button>
+        <button class="btn-watch" onclick="playVideo('kruger_national_park', 'Kruger National Park')">WATCH NOW</button>
       </div>
     </div>
   </div>
@@ -163,7 +163,7 @@
       <h3 id="playerTitle">Now Playing</h3>
       <button class="close-btn" onclick="closePlayer()">×</button>
     </div>
-    <video id="videoPlayer" controls autoplay></video>
+    <iframe id="videoPlayer" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
   </div>
 </div>
 
@@ -188,96 +188,36 @@
 
 <script>
 const worldContent = [
-  { 
-    title: "Kruger National Park", 
-    img: "https://archive.org/services/img/kruger_national_park", 
-    video: "https://archive.org/download/kruger_national_park/kruger_512kb.mp4", 
-    badge:"SA" 
-  },
-  { 
-    title: "Grand Canyon", 
-    img: "https://archive.org/services/img/grand_canyon_doc", 
-    video: "https://archive.org/download/grand_canyon_doc/canyon_512kb.mp4", 
-    badge:"USA" 
-  },
-  { 
-    title: "Tokyo 1960s", 
-    img: "https://archive.org/services/img/tokyo_1960s", 
-    video: "https://archive.org/download/tokyo_1960s/tokyo_512kb.mp4", 
-    badge:"Japan" 
-  },
-  { 
-    title: "London 1920s", 
-    img: "https://archive.org/services/img/london_1920s", 
-    video: "https://archive.org/download/london_1920s/london_512kb.mp4", 
-    badge:"UK" 
-  },
-  { 
-    title: "Amazon Rainforest", 
-    img: "https://archive.org/services/img/amazon_rainforest", 
-    video: "https://archive.org/download/amazon_rainforest/amazon_512kb.mp4", 
-    badge:"Brazil" 
-  },
-  { 
-    title: "Egypt Pyramids", 
-    img: "https://archive.org/services/img/egypt_pyramids_doc", 
-    video: "https://archive.org/download/egypt_pyramids_doc/egypt_512kb.mp4", 
-    badge:"Egypt" 
-  },
-  { 
-    title: "Paris 1930s", 
-    img: "https://archive.org/services/img/paris_1930s", 
-    video: "https://archive.org/download/paris_1930s/paris_512kb.mp4", 
-    badge:"France" 
-  },
-  { 
-    title: "Great Wall China", 
-    img: "https://archive.org/services/img/great_wall_china", 
-    video: "https://archive.org/download/great_wall_china/wall_512kb.mp4", 
-    badge:"China" 
-  },
-  { 
-    title: "Sahara Desert", 
-    img: "https://archive.org/services/img/sahara_desert_doc", 
-    video: "https://archive.org/download/sahara_desert_doc/sahara_512kb.mp4", 
-    badge:"Africa" 
-  },
-  { 
-    title: "Venice 1950s", 
-    img: "https://archive.org/services/img/venice_1950s", 
-    video: "https://archive.org/download/venice_1950s/venice_512kb.mp4", 
-    badge:"Italy" 
-  },
-  { 
-    title: "Australian Outback", 
-    img: "https://archive.org/services/img/australian_outback", 
-    video: "https://archive.org/download/australian_outback/outback_512kb.mp4", 
-    badge:"Australia" 
-  },
-  { 
-    title: "Alps Mountains", 
-    img: "https://archive.org/services/img/alps_mountains_doc", 
-    video: "https://archive.org/download/alps_mountains_doc/alps_512kb.mp4", 
-    badge:"Europe" 
-  }
+  { title: "Kruger National Park", img: "https://archive.org/services/img/kruger_national_park", archiveId: "kruger_national_park", badge:"SA" },
+  { title: "Grand Canyon", img: "https://archive.org/services/img/grand_canyon_doc", archiveId: "grand_canyon_doc", badge:"USA" },
+  { title: "Tokyo 1960s", img: "https://archive.org/services/img/tokyo_1960s", archiveId: "tokyo_1960s", badge:"Japan" },
+  { title: "London 1920s", img: "https://archive.org/services/img/london_1920s", archiveId: "london_1920s", badge:"UK" },
+  { title: "Amazon Rainforest", img: "https://archive.org/services/img/amazon_rainforest", archiveId: "amazon_rainforest", badge:"Brazil" },
+  { title: "Egypt Pyramids", img: "https://archive.org/services/img/egypt_pyramids_doc", archiveId: "egypt_pyramids_doc", badge:"Egypt" },
+  { title: "Paris 1930s", img: "https://archive.org/services/img/paris_1930s", archiveId: "paris_1930s", badge:"France" },
+  { title: "Great Wall China", img: "https://archive.org/services/img/great_wall_china", archiveId: "great_wall_china", badge:"China" },
+  { title: "Sahara Desert", img: "https://archive.org/services/img/sahara_desert_doc", archiveId: "sahara_desert_doc", badge:"Africa" },
+  { title: "Venice 1950s", img: "https://archive.org/services/img/venice_1950s", archiveId: "venice_1950s", badge:"Italy" },
+  { title: "Australian Outback", img: "https://archive.org/services/img/australian_outback", archiveId: "australian_outback", badge:"Australia" },
+  { title: "Alps Mountains", img: "https://archive.org/services/img/alps_mountains_doc", archiveId: "alps_mountains_doc", badge:"Europe" }
 ];
 
 const movies = [
-  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", video: "https://archive.org/download/NightoftheLivingDead/NightoftheLivingDead_512kb.mp4", badge:"Horror" },
-  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", video: "https://archive.org/download/great_train_robbery/great_train_robbery_512kb.mp4", badge:"Western" },
-  { title: "Metropolis", img: "https://archive.org/services/img/metropolis1927", video: "https://archive.org/download/metropolis1927/Metropolis_512kb.mp4", badge:"Sci-Fi" },
-  { title: "Charade", img: "https://archive.org/services/img/Charade_512", video: "https://archive.org/download/Charade_512/Charade_512kb.mp4", badge:"Thriller" },
-  { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", video: "https://archive.org/download/nosferatu/nosferatu_512kb.mp4", badge:"Horror" },
-  { title: "The General", img: "https://archive.org/services/img/the_general", video: "https://archive.org/download/the_general/general_512kb.mp4", badge:"Comedy" }
+  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", archiveId: "NightoftheLivingDead", badge:"Horror" },
+  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", archiveId: "great_train_robbery", badge:"Western" },
+  { title: "Metropolis", img: "https://archive.org/services/img/metropolis1927", archiveId: "metropolis1927", badge:"Sci-Fi" },
+  { title: "Charade", img: "https://archive.org/services/img/Charade_512", archiveId: "Charade_512", badge:"Thriller" },
+  { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", archiveId: "nosferatu", badge:"Horror" },
+  { title: "The General", img: "https://archive.org/services/img/the_general", archiveId: "the_general", badge:"Comedy" }
 ];
 
 const cartoons = [
-  { title: "Steamboat Willie", img: "https://archive.org/services/img/Steamboat_Willie", video: "https://archive.org/download/Steamboat_Willie/Steamboat_Willie_512kb.mp4", badge:"Mickey" },
-  { title: "Popeye - I Yam What I Yam", img: "https://archive.org/services/img/popeye_I_Yam_What_I_Yam", video: "https://archive.org/download/popeye_I_Yam_What_I_Yam/popeye_I_Yam_What_I_Yam_512kb.mp4", badge:"Classic" },
-  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", video: "https://archive.org/download/felix-the-cat-public-domain/felix_512kb.mp4", badge:"Silent" },
-  { title: "Betty Boop", img: "https://archive.org/services/img/Betty_Boop_Snow_White", video: "https://archive.org/download/Betty_Boop_Snow_White/Betty_Boop_Snow_White_512kb.mp4", badge:"1930s" },
-  { title: "Looney Tunes", img: "https://archive.org/services/img/looney_tunes_public", video: "https://archive.org/download/looney_tunes_public/looney_512kb.mp4", badge:"Cartoon" },
-  { title: "Tom & Jerry", img: "https://archive.org/services/img/tom_jerry_public", video: "https://archive.org/download/tom_jerry_public/tomjerry_512kb.mp4", badge:"Classic" }
+  { title: "Steamboat Willie", img: "https://archive.org/services/img/Steamboat_Willie", archiveId: "Steamboat_Willie", badge:"Mickey" },
+  { title: "Popeye - I Yam What I Yam", img: "https://archive.org/services/img/popeye_I_Yam_What_I_Yam", archiveId: "popeye_I_Yam_What_I_Yam", badge:"Classic" },
+  { title: "Felix the Cat", img: "https://archive.org/services/img/felix-the-cat-public-domain", archiveId: "felix-the-cat-public-domain", badge:"Silent" },
+  { title: "Betty Boop", img: "https://archive.org/services/img/Betty_Boop_Snow_White", archiveId: "Betty_Boop_Snow_White", badge:"1930s" },
+  { title: "Looney Tunes", img: "https://archive.org/services/img/looney_tunes_public", archiveId: "looney_tunes_public", badge:"Cartoon" },
+  { title: "Tom & Jerry", img: "https://archive.org/services/img/tom_jerry_public", archiveId: "tom_jerry_public", badge:"Classic" }
 ];
 
 const games = [
@@ -293,7 +233,7 @@ function loadGrid(id, items, type) {
   items.forEach(item => {
     const onclick = type === 'game' 
       ? `window.open('${item.url}', '_blank')` 
-      : `playVideo('${item.video}', '${item.title}')`;
+      : `playVideo('${item.archiveId}', '${item.title}')`;
     
     grid.innerHTML += `
       <div class="card" onclick="${onclick}">
@@ -307,19 +247,17 @@ function loadGrid(id, items, type) {
   });
 }
 
-function playVideo(src, title) {
+function playVideo(archiveId, title) {
   const modal = document.getElementById('playerModal');
   const player = document.getElementById('videoPlayer');
   document.getElementById('playerTitle').textContent = title;
-  player.src = src;
+  player.src = `https://archive.org/embed/${archiveId}`;
   modal.classList.add('show');
-  player.play();
 }
 
 function closePlayer() {
   const modal = document.getElementById('playerModal');
   const player = document.getElementById('videoPlayer');
-  player.pause();
   player.src = '';
   modal.classList.remove('show');
 }
