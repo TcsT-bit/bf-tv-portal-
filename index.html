@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BF TV - Free Streaming</title>
+<title>BF TV - Wireless Solutions</title>
 <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
   body { background:#0d0d0d; color:#fff; padding-bottom:70px; }
@@ -63,6 +63,50 @@
     overflow:hidden; text-overflow:ellipsis; 
   }
   
+  .solution-section {
+    padding:20px;
+    background:#1a1a1a;
+    margin:20px;
+    border-radius:12px;
+  }
+  .solution-section h2 {
+    color:#b8ff00;
+    font-size:1.3rem;
+    margin-bottom:15px;
+  }
+  .solution-section h4 {
+    color:#fff;
+    font-size:1rem;
+    margin:15px 0 10px;
+  }
+  .solution-section ul {
+    list-style:none;
+    padding-left:0;
+  }
+  .solution-section li {
+    padding:8px 0 8px 20px;
+    position:relative;
+    color:#ccc;
+    font-size:0.9rem;
+    line-height:1.4;
+  }
+  .solution-section li:before {
+    content:"•";
+    color:#b8ff00;
+    position:absolute;
+    left:0;
+  }
+  .solution-badge {
+    display:inline-block;
+    background:#b8ff00;
+    color:#000;
+    padding:4px 12px;
+    border-radius:6px;
+    font-weight:700;
+    font-size:0.8rem;
+    margin-bottom:15px;
+  }
+  
   .bottom-nav { 
     position:fixed; bottom:0; left:0; right:0; 
     background:#1a1a1a; display:flex; justify-content:space-around; 
@@ -113,9 +157,10 @@
 </header>
 
 <div class="tabs">
-  <a class="active">Home</a>
-  <a onclick="scrollToSection('world')">World Docs</a>
-  <a onclick="scrollToSection('movies')">Movies</a>
+  <a class="active" onclick="showSection('home')">Home</a>
+  <a onclick="showSection('solution')">Solution</a>
+  <a onclick="showSection('world')">World Docs</a>
+  <a onclick="showSection('movies')">Movies</a>
   <a onclick="scrollToSection('cartoons')">Cartoons</a>
   <a onclick="scrollToSection('games')">Games</a>
 </div>
@@ -127,30 +172,64 @@
 <div id="homeSection">
   <div class="hero">
     <div class="hero-card">
-      <img src="https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg" alt="Kruger National Park">
+      <img src="https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg" alt="SA Wildlife">
       <div class="hero-info">
-        <h2>SA Wildlife Documentary</h2>
-        <p>Creative Commons • YouTube</p>
-        <button class="btn-watch" onclick="playVideo('youtube', 'M7lc1UVf-VE', 'SA Wildlife Documentary')">WATCH NOW</button>
+        <h2>Client Hub Live</h2>
+        <p>Free content + local deals when clients connect</p>
+        <button class="btn-watch" onclick="showSection('solution')">VIEW SOLUTION</button>
       </div>
     </div>
   </div>
+</div>
 
+<div id="solutionSection" style="display:none;">
+  <div class="solution-section">
+    <span class="solution-badge">2. The Solution</span>
+    <h2>Upgrade to a "Client Hub"</h2>
+    <p style="color:#aaa; font-size:0.9rem; margin-bottom:20px;">Loads automatically when clients connect to the portal</p>
+    
+    <h4>When internet is up:</h4>
+    <ul>
+      <li><strong>Free Movies & Series:</strong> Public domain films, SA indie shorts, legal YouTube/Tubi channels</li>
+      <li><strong>Local Deals:</strong> Ad slots for Burgersfort/Lydenburg spazas, colleges, churches</li>
+      <li><strong>Account Tools:</strong> Balance check, support contact, "Upgrade Package" button</li>
+    </ul>
+    
+    <h4>When internet is down:</h4>
+    <ul>
+      <li><strong>Offline Backup Content:</strong> 20-30 preloaded movies, kids shows, offline games, offline Wikipedia served from a local drive at each tower</li>
+      <li><strong>Keep clients entertained:</strong> Reduces angry calls during outages</li>
+    </ul>
+    
+    <div style="margin-top:20px; padding:15px; background:#0d0d0d; border-radius:8px; border-left:3px solid #b8ff00;">
+      <p style="color:#b8ff00; font-weight:600; margin-bottom:5px;">Setup time: 1 day per site</p>
+      <p style="color:#aaa; font-size:0.85rem;">Standard Mikrotik feature. No extra hardware needed.</p>
+    </div>
+  </div>
+</div>
+
+<div id="worldSection" style="display:none;">
   <div class="section" id="world">
     <div class="section-header"><h3>🌍 World Documentaries</h3></div>
     <div class="grid" id="worldGrid"></div>
   </div>
+</div>
 
+<div id="moviesSection" style="display:none;">
   <div class="section" id="movies">
     <div class="section-header"><h3>Classic Movies</h3></div>
     <div class="grid" id="moviesGrid"></div>
   </div>
+</div>
 
+<div id="cartoonsSection" style="display:none;">
   <div class="section" id="cartoons">
     <div class="section-header"><h3>Cartoons & Classics</h3></div>
     <div class="grid" id="cartoonsGrid"></div>
   </div>
+</div>
 
+<div id="gamesSection" style="display:none;">
   <div class="section" id="games">
     <div class="section-header"><h3>Offline Games</h3></div>
     <div class="grid" id="gamesGrid"></div>
@@ -169,21 +248,21 @@
 </div>
 
 <nav class="bottom-nav">
-  <a class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  <a class="nav-item active" onclick="showSection('home')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     <div>Home</div>
   </a>
-  <a class="nav-item" onclick="scrollToSection('world')">
+  <a class="nav-item" onclick="showSection('solution')">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M9 17v-2h6v2H9zm0-4v-2h6v2H9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+    <div>Solution</div>
+  </a>
+  <a class="nav-item" onclick="showSection('world')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm4 0h-2v-6h2v6z"/></svg>
     <div>World</div>
   </a>
-  <a class="nav-item" onclick="scrollToSection('movies')">
+  <a class="nav-item" onclick="showSection('movies')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4l-8 8-8-8v16h16V4z"/></svg>
     <div>Movies</div>
-  </a>
-  <a class="nav-item" onclick="scrollToSection('games')">
-    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zM3 13h18v-2H3v2zM3 6v2h18V6H3z"/></svg>
-    <div>Games</div>
   </a>
 </nav>
 
@@ -218,6 +297,24 @@ const games = [
   { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", url:"https://playtictactoe.org/", badge:"Strategy" },
   { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", url:"https://www.chess.com/play/online", badge:"Board" }
 ];
+
+function showSection(section) {
+  document.getElementById('homeSection').style.display = 'none';
+  document.getElementById('solutionSection').style.display = 'none';
+  document.getElementById('worldSection').style.display = 'none';
+  document.getElementById('moviesSection').style.display = 'none';
+  document.getElementById('cartoonsSection').style.display = 'none';
+  document.getElementById('gamesSection').style.display = 'none';
+  
+  document.getElementById(section + 'Section').style.display = 'block';
+  
+  document.querySelectorAll('.tabs a, .nav-item').forEach(el => el.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  if(section !== 'home' && section !== 'solution') {
+    scrollToSection(section);
+  }
+}
 
 function loadGrid(id, items, type) {
   const grid = document.getElementById(id);
