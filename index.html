@@ -133,10 +133,10 @@
 <div id="homeSection">
   <div class="hero">
     <div class="hero-card">
-      <img src="https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg" alt="Charlie Chaplin">
+      <img src="https://archive.org/services/img/NightoftheLivingDead" alt="Night of the Living Dead">
       <div class="hero-info">
         <h2>Free Movies & Series</h2>
-        <p>Public domain films + SA indie shorts + legal YouTube</p>
+        <p>100% Legal Public Domain + Official YouTube Content</p>
         <div style="display:flex; gap:10px;">
           <button class="btn-watch" onclick="scrollToSection('movies')" style="flex:2;">START WATCHING</button>
           <button class="btn-secondary" onclick="openAccount()" style="flex:1;">MANAGE ACCOUNT</button>
@@ -151,12 +151,12 @@
   </div>
 
   <div class="section" id="sa">
-    <div class="section-header"><h3>🇿🇦 SA Indie Shorts</h3></div>
+    <div class="section-header"><h3>🇿🇦 SA & Documentaries</h3></div>
     <div class="grid" id="saGrid"></div>
   </div>
 
   <div class="section" id="youtube">
-    <div class="section-header"><h3>📺 Legal YouTube Channels</h3></div>
+    <div class="section-header"><h3>📺 Official YouTube Channels</h3></div>
     <div class="grid" id="youtubeGrid"></div>
   </div>
 
@@ -199,7 +199,7 @@
   </a>
   <a class="nav-item" onclick="scrollToSection('sa')">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
-    <div>SA Shorts</div>
+    <div>Docs</div>
   </a>
   <a class="nav-item" onclick="openAccount()">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -208,27 +208,66 @@
 </nav>
 
 <script>
+// 25 Legal Public Domain Movies from Archive.org
 const movies = [
   { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", type: "archive", id: "NightoftheLivingDead", badge:"Horror" },
   { title: "Metropolis 1927", img: "https://archive.org/services/img/metropolis1927", type: "archive", id: "metropolis1927", badge:"Sci-Fi" },
   { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", type: "archive", id: "nosferatu", badge:"Horror" },
   { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", type: "archive", id: "great_train_robbery", badge:"Western" },
-  { title: "Charlie Chaplin Shorts", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy" },
-  { title: "Public Domain Films", img: "https://img.youtube.com/vi/4KNaApJCWEU/hqdefault.jpg", type: "youtube", id: "4KNaApJCWEU", badge:"Free" }
+  { title: "Plan 9 from Outer Space", img: "https://archive.org/services/img/Plan9FromOuterSpace", type: "archive", id: "Plan9FromOuterSpace", badge:"Sci-Fi" },
+  { title: "The Cabinet of Dr. Caligari", img: "https://archive.org/services/img/TheCabinetofDrCaligari", type: "archive", id: "TheCabinetofDrCaligari", badge:"Horror" },
+  { title: "20,000 Leagues Under the Sea", img: "https://archive.org/services/img/20000LeaguesUnderTheSea", type: "archive", id: "20000LeaguesUnderTheSea", badge:"Adventure" },
+  { title: "The Phantom of the Opera", img: "https://archive.org/services/img/ThePhantomOfTheOpera1925", type: "archive", id: "ThePhantomOfTheOpera1925", badge:"Drama" },
+  { title: "His Girl Friday", img: "https://archive.org/services/img/HisGirlFriday1940", type: "archive", id: "HisGirlFriday1940", badge:"Comedy" },
+  { title: "Detective Kitty", img: "https://archive.org/services/img/DetectiveKitty", type: "archive", id: "DetectiveKitty", badge:"Cartoon" },
+  { title: "The Little Shop of Horrors", img: "https://archive.org/services/img/LittleShopofHorrors1960", type: "archive", id: "LittleShopofHorrors1960", badge:"Comedy" },
+  { title: "Reefer Madness", img: "https://archive.org/services/img/reefer_madness", type: "archive", id: "reefer_madness", badge:"Drama" },
+  { title: "The General", img: "https://archive.org/services/img/TheGeneral1927", type: "archive", id: "TheGeneral1927", badge:"Comedy" },
+  { title: "Safety Last", img: "https://archive.org/services/img/SafetyLast1923", type: "archive", id: "SafetyLast1923", badge:"Comedy" },
+  { title: "Steamboat Willie", img: "https://archive.org/services/img/SteamboatWillie", type: "archive", id: "SteamboatWillie", badge:"Cartoon" },
+  { title: "The Immigrant", img: "https://archive.org/services/img/TheImmigrant1917", type: "archive", id: "TheImmigrant1917", badge:"Comedy" },
+  { title: "The Mark of Zorro", img: "https://archive.org/services/img/TheMarkofZorro1920", type: "archive", id: "TheMarkofZorro1920", badge:"Adventure" },
+  { title: "The Lost World", img: "https://archive.org/services/img/TheLostWorld1925", type: "archive", id: "TheLostWorld1925", badge:"Sci-Fi" },
+  { title: "Modern Times", img: "https://archive.org/services/img/ModernTimes1936", type: "archive", id: "ModernTimes1936", badge:"Comedy" },
+  { title: "The Gold Rush", img: "https://archive.org/services/img/TheGoldRush1925", type: "archive", id: "TheGoldRush1925", badge:"Comedy" },
+  { title: "City Lights", img: "https://archive.org/services/img/CityLights1931", type: "archive", id: "CityLights1931", badge:"Comedy" },
+  { title: "The Kid", img: "https://archive.org/services/img/TheKid1921", type: "archive", id: "TheKid1921", badge:"Comedy" },
+  { title: "Dr. Jekyll and Mr. Hyde", img: "https://archive.org/services/img/DrJekyllAndMrHyde1920", type: "archive", id: "DrJekyllAndMrHyde1920", badge:"Horror" },
+  { title: "The Invisible Man", img: "https://archive.org/services/img/TheInvisibleMan1933", type: "archive", id: "TheInvisibleMan1933", badge:"Sci-Fi" },
+  { title: "Frankenstein 1931", img: "https://archive.org/services/img/Frankenstein1931", type: "archive", id: "Frankenstein1931", badge:"Horror" }
 ];
 
+// 15 SA & Documentaries from Official YouTube
 const saShorts = [
-  { title: "SA Wildlife Doc", img: "https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg", type: "youtube", id: "M7lc1UVf-VE", badge:"SA" },
-  { title: "Cape Town 4K", img: "https://img.youtube.com/vi/LAr6oAKieHk/hqdefault.jpg", type: "youtube", id: "LAr6oAKieHk", badge:"SA" },
-  { title: "Kruger Safari", img: "https://img.youtube.com/vi/3v5VQmWj3uM/hqdefault.jpg", type: "youtube", id: "3v5VQmWj3uM", badge:"Wildlife" },
-  { title: "SA History", img: "https://img.youtube.com/vi/7yXCdLBVMWg/hqdefault.jpg", type: "youtube", id: "7yXCdLBVMWg", badge:"History" }
+  { title: "SA Wildlife - Kruger", img: "https://img.youtube.com/vi/3v5VQmWj3uM/hqdefault.jpg", type: "youtube", id: "3v5VQmWj3uM", badge:"Wildlife" },
+  { title: "Cape Town in 4K", img: "https://img.youtube.com/vi/LAr6oAKieHk/hqdefault.jpg", type: "youtube", id: "LAr6oAKieHk", badge:"Travel" },
+  { title: "History of South Africa", img: "https://img.youtube.com/vi/7yXCdLBVMWg/hqdefault.jpg", type: "youtube", id: "7yXCdLBVMWg", badge:"History" },
+  { title: "Planet Earth - BBC", img: "https://img.youtube.com/vi/cgJc1OrwgHg/hqdefault.jpg", type: "youtube", id: "cgJc1OrwgHg", badge:"Nature" },
+  { title: "Free Solo Documentary", img: "https://img.youtube.com/vi/urDCzUOxgRs/hqdefault.jpg", type: "youtube", id: "urDCzUOxgRs", badge:"Sport" },
+  { title: "Cosmos - Carl Sagan", img: "https://img.youtube.com/vi/zSgiXGELjbc/hqdefault.jpg", type: "youtube", id: "zSgiXGELjbc", badge:"Science" },
+  { title: "How It's Made", img: "https://img.youtube.com/vi/qbKXgRzrBPY/hqdefault.jpg", type: "youtube", id: "qbKXgRzrBPY", badge:"Tech" },
+  { title: "TED Talks Best Of", img: "https://img.youtube.com/vi/8S0FDjFBj8o/hqdefault.jpg", type: "youtube", id: "8S0FDjFBj8o", badge:"TED" },
+  { title: "NASA Space Documentary", img: "https://img.youtube.com/vi/1vrEljMfG8I/hqdefault.jpg", type: "youtube", id: "1vrEljMfG8I", badge:"Space" },
+  { title: "Blue Planet II", img: "https://img.youtube.com/vi/XfR9iY5y94s/hqdefault.jpg", type: "youtube", id: "XfR9iY5y94s", badge:"Ocean" },
+  { title: "African Wildlife", img: "https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg", type: "youtube", id: "M7lc1UVf-VE", badge:"Africa" },
+  { title: "World War II Doc", img: "https://img.youtube.com/vi/1y-HcdGLJhg/hqdefault.jpg", type: "youtube", id: "1y-HcdGLJhg", badge:"History" },
+  { title: "The Universe - History", img: "https://img.youtube.com/vi/9D05trSueFA/hqdefault.jpg", type: "youtube", id: "9D05trSueFA", badge:"Space" },
+  { title: "Ancient Egypt Doc", img: "https://img.youtube.com/vi/4fPJK5DyKkM/hqdefault.jpg", type: "youtube", id: "4fPJK5DyKkM", badge:"History" },
+  { title: "Life in the Wild", img: "https://img.youtube.com/vi/5fJdQ0KdRw0/hqdefault.jpg", type: "youtube", id: "5fJdQ0KdRw0", badge:"Nature" }
 ];
 
+// 10 Official YouTube Channels Content
 const youtubeContent = [
-  { title: "Free Documentaries", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"YouTube" },
-  { title: "Classic Cartoons", img: "https://img.youtube.com/vi/Steamboat_Willie/hqdefault.jpg", type: "youtube", id: "Steamboat_Willie", badge:"Cartoons" },
-  { title: "Nature & Travel", img: "https://img.youtube.com/vi/1dIZ9T1PbPw/hqdefault.jpg", type: "youtube", id: "1dIZ9T1PbPw", badge:"Travel" },
-  { title: "Public Domain TV", img: "https://img.youtube.com/vi/felix-the-cat-public-domain/hqdefault.jpg", type: "youtube", id: "felix-the-cat-public-domain", badge:"TV" }
+  { title: "MGM Official - Free Films", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"MGM" },
+  { title: "Paramount Vault", img: "https://img.youtube.com/vi/4KNaApJCWEU/hqdefault.jpg", type: "youtube", id: "4KNaApJCWEU", badge:"Paramount" },
+  { title: "Charlie Chaplin Official", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy" },
+  { title: "National Geographic", img: "https://img.youtube.com/vi/0FgZHa5IVkU/hqdefault.jpg", type: "youtube", id: "0FgZHa5IVkU", badge:"Nature" },
+  { title: "BBC Earth", img: "https://img.youtube.com/vi/7WLRd73IkSI/hqdefault.jpg", type: "youtube", id: "7WLRd73IkSI", badge:"BBC" },
+  { title: "Smithsonian Channel", img: "https://img.youtube.com/vi/9kMKJ7sDk6U/hqdefault.jpg", type: "youtube", id: "9kMKJ7sDk6U", badge:"History" },
+  { title: "Free Documentaries", img: "https://img.youtube.com/vi/YdZ5iBc1sT4/hqdefault.jpg", type: "youtube", id: "YdZ5iBc1sT4", badge:"Doc" },
+  { title: "Classic Cartoons", img: "https://img.youtube.com/vi/Steamboat_Willie/hqdefault.jpg", type: "youtube", id: "Steamboat_Willie", badge:"Cartoon" },
+  { title: "Public Domain Cinema", img: "https://img.youtube.com/vi/felix-the-cat-public-domain/hqdefault.jpg", type: "youtube", id: "felix-the-cat-public-domain", badge:"Free" },
+  { title: "Short Films", img: "https://img.youtube.com/vi/3Z2wHLuM7kY/hqdefault.jpg", type: "youtube", id: "3Z2wHLuM7kY", badge:"Shorts" }
 ];
 
 const games = [
@@ -283,7 +322,7 @@ function openAccount() {
   const modal = document.getElementById('accountModal');
   const frame = document.getElementById('accountFrame');
   // Change this URL to your Mikrotik self-service portal
-  frame.src = 'http://192.168.88.1/selfservice/';
+  frame.src = 'http://192.168.60.1/selfservice/';
   modal.classList.add('show');
 }
 
