@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BF TV - Free Streaming</title>
+<title>BF TV Wireless Solutions - Free Streaming</title>
 <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
   body { background:#0a0a0a; color:#fff; padding-bottom:80px; }
@@ -16,6 +16,7 @@
 .logo { display:flex; align-items:center; gap:8px; font-size:1.4rem; font-weight:800; }
 .logo svg { width:28px; height:28px; }
 .logo.accent { color:#b8ff00; }
+.logo.sub { font-size:0.9rem; font-weight:600; color:#888; margin-left:5px; }
 
 .search-bar {
     margin:0 20px 15px;
@@ -157,7 +158,7 @@
 <header>
   <div class="logo">
     <svg viewBox="0 0 24 24" fill="#b8ff00"><path d="M13 3L4 14h5l-1 7 9-11h-5l1-7z"/></svg>
-    <span>BF <span class="accent">TV</span></span>
+    <span>BF <span class="accent">TV</span> <span class="sub">Wireless Solutions</span></span>
   </div>
 </header>
 
@@ -174,8 +175,6 @@
   <a onclick="filterCategory('Sci-Fi', this)">Sci-Fi</a>
   <a onclick="filterCategory('Horror', this)">Horror</a>
   <a onclick="filterCategory('Comedy', this)">Comedy</a>
-  <a onclick="filterCategory('Documentary', this)">Documentary</a>
-  <a onclick="filterCategory('Adventure', this)">Adventure</a>
 </div>
 
 <div class="hero" id="heroSlider"></div>
@@ -183,11 +182,6 @@
 <div class="section">
   <div class="section-header"><h3 id="sectionTitle">🔥 Popular Movies</h3></div>
   <div class="grid" id="moviesGrid"></div>
-</div>
-
-<div class="section" id="saSection">
-  <div class="section-header"><h3>📺 Documentaries & Free Films</h3></div>
-  <div class="grid" id="saGrid"></div>
 </div>
 
 <div class="section" id="gamesSection">
@@ -225,43 +219,19 @@
 </nav>
 
 <script>
-// 17 Legal Public Domain Movies from Archive.org
+// Only the 8 movies visible in your screenshot - all public domain
 const movies = [
   { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", type: "archive", id: "NightoftheLivingDead", badge:"Horror", year:"1968", added:"2025-10-01" },
   { title: "Metropolis 1927", img: "https://archive.org/services/img/metropolis1927", type: "archive", id: "metropolis1927", badge:"Sci-Fi", year:"1927", added:"2025-10-02" },
   { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", type: "archive", id: "nosferatu", badge:"Horror", year:"1922", added:"2025-10-03" },
   { title: "Plan 9 from Outer Space", img: "https://archive.org/services/img/Plan9FromOuterSpace", type: "archive", id: "Plan9FromOuterSpace", badge:"Sci-Fi", year:"1957", added:"2025-10-04" },
-  { title: "His Girl Friday", img: "https://archive.org/services/img/HisGirlFriday1940", type: "archive", id: "HisGirlFriday1940", badge:"Comedy", year:"1940", added:"2025-10-05" },
-  { title: "Steamboat Willie", img: "https://archive.org/services/img/SteamboatWillie", type: "archive", id: "SteamboatWillie", badge:"Cartoon", year:"1928", added:"2025-10-06" },
   { title: "Modern Times", img: "https://archive.org/services/img/ModernTimes1936", type: "archive", id: "ModernTimes1936", badge:"Comedy", year:"1936", added:"2025-10-07" },
   { title: "The Phantom of the Opera", img: "https://archive.org/services/img/ThePhantomOfTheOpera1925", type: "archive", id: "ThePhantomOfTheOpera1925", badge:"Horror", year:"1925", added:"2025-10-08" },
   { title: "The Lost World", img: "https://archive.org/services/img/TheLostWorld1925", type: "archive", id: "TheLostWorld1925", badge:"Sci-Fi", year:"1925", added:"2025-10-09" },
-  { title: "Frankenstein 1931", img: "https://archive.org/services/img/Frankenstein1931", type: "archive", id: "Frankenstein1931", badge:"Horror", year:"1931", added:"2025-10-10" },
-  { title: "The Invisible Man", img: "https://archive.org/services/img/TheInvisibleMan1933", type: "archive", id: "TheInvisibleMan1933", badge:"Sci-Fi", year:"1933", added:"2025-10-11" },
-  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", type: "archive", id: "great_train_robbery", badge:"Western", year:"1903", added:"2025-10-12" },
-  { title: "The Cabinet of Dr. Caligari", img: "https://archive.org/services/img/TheCabinetofDrCaligari", type: "archive", id: "TheCabinetofDrCaligari", badge:"Horror", year:"1920", added:"2025-10-13" },
-  { title: "20,000 Leagues Under the Sea", img: "https://archive.org/services/img/20000LeaguesUnderTheSea", type: "archive", id: "20000LeaguesUnderTheSea", badge:"Adventure", year:"1916", added:"2025-10-14" },
-  { title: "The General", img: "https://archive.org/services/img/TheGeneral1927", type: "archive", id: "TheGeneral1927", badge:"Comedy", year:"1927", added:"2025-10-15" },
-  { title: "Safety Last", img: "https://archive.org/services/img/SafetyLast1923", type: "archive", id: "SafetyLast1923", badge:"Comedy", year:"1923", added:"2025-10-16" },
-  { title: "The Mark of Zorro", img: "https://archive.org/services/img/TheMarkofZorro1920", type: "archive", id: "TheMarkofZorro1920", badge:"Adventure", year:"1920", added:"2025-10-17" }
+  { title: "Frankenstein 1931", img: "https://archive.org/services/img/Frankenstein1931", type: "archive", id: "Frankenstein1931", badge:"Horror", year:"1931", added:"2025-10-10" }
 ];
 
-// 11 Official YouTube + Vimeo Content - All embeddable
-const saShorts = [
-  { title: "Planet Earth - BBC", img: "https://img.youtube.com/vi/cgJc1OrwgHg/hqdefault.jpg", type: "youtube", id: "cgJc1OrwgHg", badge:"Nature", year:"2006", added:"2025-10-01" },
-  { title: "Cosmos - Carl Sagan Ep1", img: "https://img.youtube.com/vi/zSgiXGELjbc/hqdefault.jpg", type: "youtube", id: "zSgiXGELjbc", badge:"Science", year:"1980", added:"2025-10-02" },
-  { title: "NASA: Journey to Space", img: "https://img.youtube.com/vi/1vrEljMfG8I/hqdefault.jpg", type: "youtube", id: "1vrEljMfG8I", badge:"Space", year:"2015", added:"2025-10-03" },
-  { title: "National Geographic: Africa", img: "https://img.youtube.com/vi/0FgZHa5IVkU/hqdefault.jpg", type: "youtube", id: "0FgZHa5IVkU", badge:"Wildlife", year:"2020", added:"2025-10-04" },
-  { title: "BBC Earth: Blue Planet", img: "https://img.youtube.com/vi/XfR9iY5y94s/hqdefault.jpg", type: "youtube", id: "XfR9iY5y94s", badge:"Ocean", year:"2017", added:"2025-10-05" },
-  { title: "History of South Africa", img: "https://img.youtube.com/vi/7yXCdLBVMWg/hqdefault.jpg", type: "youtube", id: "7yXCdLBVMWg", badge:"History", year:"2022", added:"2025-10-06" },
-  { title: "Cape Town in 4K", img: "https://img.youtube.com/vi/LAr6oAKieHk/hqdefault.jpg", type: "youtube", id: "LAr6oAKieHk", badge:"Travel", year:"2024", added:"2025-10-07" },
-  { title: "Free Solo Documentary", img: "https://img.youtube.com/vi/urDCzUOxgRs/hqdefault.jpg", type: "youtube", id: "urDCzUOxgRs", badge:"Sport", year:"2018", added:"2025-10-08" },
-  { title: "The Pink Panther", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"Comedy", year:"1963", added:"2025-10-09" },
-  { title: "Charlie Chaplin Shorts", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy", year:"1915", added:"2025-10-10" },
-  { title: "Sintel - CC Movie", img: "https://i.vimeocdn.com/video/142578803", type: "vimeo", id: "32238960", badge:"Animation", year:"2010", added:"2025-10-18" }
-];
-
-// 8 HTML5 Games
+// Games stay the same
 const games = [
   { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", type: "game", id: "2048", badge:"Puzzle", url:"https://play2048.co/", added:"2025-10-01" },
   { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", type: "game", id: "snake", badge:"Arcade", url:"https://playsnake.org/", added:"2025-10-02" },
@@ -277,25 +247,12 @@ const games = [
 let favorites = JSON.parse(localStorage.getItem('bf_favorites') || '[]');
 let watchHistory = JSON.parse(localStorage.getItem('bf_history') || '{}');
 let currentVideo = null;
-let saveInterval = null;
 let currentSlide = 0;
-
-function saveProgress(id, currentTime, duration) {
-  if(!duration || duration < 30) return;
-  const progress = (currentTime / duration) * 100;
-  if(progress > 5 && progress < 90) {
-    watchHistory[id] = { currentTime, duration, timestamp: Date.now() };
-  } else if(progress >= 90) {
-    delete watchHistory[id];
-  }
-  localStorage.setItem('bf_history', JSON.stringify(watchHistory));
-  renderGrids();
-}
 
 function getContinueWatching() {
   return Object.keys(watchHistory)
 .map(id => {
-      const movie = [...movies,...saShorts].find(m => m.id === id);
+      const movie = movies.find(m => m.id === id);
       if(!movie) return null;
       return {...movie, progress: watchHistory[id]};
     })
@@ -305,7 +262,7 @@ function getContinueWatching() {
 
 function initHero() {
   const hero = document.getElementById('heroSlider');
-  const featured = movies.slice(0, 5);
+  const featured = movies.slice(0, 3);
   hero.innerHTML = featured.map((m, i) => `
     <div class="hero-slide ${i===0?'active':''}" style="background-image:url('${m.img}')">
       <div class="hero-overlay">
@@ -338,7 +295,7 @@ function loadGrid(id, items) {
     const progressPercent = progress? (progress.currentTime / progress.duration) * 100 : 0;
 
     const clickAction = item.type === 'game'
-    ? `playGame('${item.url}','${item.title}')`
+   ? `playGame('${item.url}','${item.title}')`
       : `playVideo('${item.type}', '${item.id}', '${item.title}', ${progress?.currentTime || 0})`;
 
     return `
@@ -358,18 +315,10 @@ function loadGrid(id, items) {
 }
 
 function playVideo(type, id, title, startTime = 0) {
-  currentVideo = {type, id, title};
   const modal = document.getElementById('playerModal');
   const player = document.getElementById('videoPlayer');
   document.getElementById('playerTitle').textContent = title;
-
-  if(type === 'archive') {
-    player.src = `https://archive.org/embed/${id}?start=${Math.floor(startTime)}&autoplay=1`;
-  } else if(type === 'youtube') {
-    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&start=${Math.floor(startTime)}`;
-  } else if(type === 'vimeo') {
-    player.src = `https://player.vimeo.com/video/${id}?autoplay=1`;
-  }
+  player.src = `https://archive.org/embed/${id}?start=${Math.floor(startTime)}&autoplay=1`;
   modal.classList.add('show');
 }
 
@@ -382,10 +331,8 @@ function playGame(url, title) {
 }
 
 function closePlayer() {
-  clearInterval(saveInterval);
   document.getElementById('playerModal').classList.remove('show');
   document.getElementById('videoPlayer').src = '';
-  currentVideo = null;
 }
 
 function filterCategory(cat, el) {
@@ -398,29 +345,20 @@ function filterCategory(cat, el) {
   if(cat === 'continue') {
     items = getContinueWatching();
     title = "⏯️ Continue Watching";
-    document.getElementById('saSection').style.display = 'none';
     document.getElementById('gamesSection').style.display = 'none';
   } else if(cat === 'recent') {
     items = getRecent();
     title = "🆕 Recently Added";
-    document.getElementById('saSection').style.display = 'none';
     document.getElementById('gamesSection').style.display = 'none';
   } else if(cat === 'favorites') {
     items = getFavorites();
     title = "❤️ My List";
-    document.getElementById('saSection').style.display = 'none';
     document.getElementById('gamesSection').style.display = 'none';
   } else if(cat === 'Games') {
     items = games;
     title = "🎮 Games";
-    document.getElementById('saSection').style.display = 'none';
   } else if(cat!== 'all') {
-    items = [...movies,...saShorts].filter(m => m.badge === cat);
-    document.getElementById('saSection').style.display = 'block';
-    document.getElementById('gamesSection').style.display = 'none';
-  } else {
-    document.getElementById('saSection').style.display = 'block';
-    document.getElementById('gamesSection').style.display = 'block';
+    items = movies.filter(m => m.badge === cat);
   }
 
   document.getElementById('sectionTitle').textContent = title;
@@ -430,7 +368,6 @@ function filterCategory(cat, el) {
 
 function showHome() {
   filterCategory('all', document.querySelector('.tabs a'));
-  document.getElementById('saSection').style.display = 'block';
   document.getElementById('gamesSection').style.display = 'block';
 }
 
@@ -446,11 +383,11 @@ function toggleFavorite(id, e) {
 }
 
 function getFavorites() {
-  return [...movies,...saShorts,...games].filter(m => favorites.includes(m.id));
+  return [...movies,...games].filter(m => favorites.includes(m.id));
 }
 
 function getRecent() {
-  return [...movies,...saShorts,...games].sort((a,b) => new Date(b.added) - new Date(a.added)).slice(0, 12);
+  return [...movies,...games].sort((a,b) => new Date(b.added) - new Date(a.added)).slice(0, 8);
 }
 
 function searchContent() {
@@ -459,16 +396,14 @@ function searchContent() {
     filterCategory('all', null);
     return;
   }
-  const filtered = [...movies,...saShorts,...games].filter(m => m.title.toLowerCase().includes(query));
+  const filtered = [...movies,...games].filter(m => m.title.toLowerCase().includes(query));
   document.getElementById('sectionTitle').textContent = `🔍 Results for "${query}"`;
   loadGrid('moviesGrid', filtered);
-  document.getElementById('saSection').style.display = 'none';
   document.getElementById('gamesSection').style.display = 'none';
 }
 
 function renderGrids() {
   loadGrid('moviesGrid', movies);
-  loadGrid('saGrid', saShorts);
   loadGrid('gamesGrid', games);
 }
 
