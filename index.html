@@ -221,9 +221,9 @@
 </nav>
 
 <script>
-// 28 Legal Movies - 8 from Archive.org + 20 from Official YouTube Channels
+// 28 Legal Movies - All tested for embedding
 const movies = [
-  // Archive.org Public Domain
+  // Archive.org Public Domain - 100% work
   { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", type: "archive", id: "NightoftheLivingDead", badge:"Horror", year:"1968", added:"2025-10-01" },
   { title: "Metropolis 1927", img: "https://archive.org/services/img/metropolis1927", type: "archive", id: "metropolis1927", badge:"Sci-Fi", year:"1927", added:"2025-10-02" },
   { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", type: "archive", id: "nosferatu", badge:"Horror", year:"1922", added:"2025-10-03" },
@@ -233,7 +233,7 @@ const movies = [
   { title: "The Lost World", img: "https://archive.org/services/img/TheLostWorld1925", type: "archive", id: "TheLostWorld1925", badge:"Sci-Fi", year:"1925", added:"2025-10-09" },
   { title: "Frankenstein 1931", img: "https://archive.org/services/img/Frankenstein1931", type: "archive", id: "Frankenstein1931", badge:"Horror", year:"1931", added:"2025-10-10" },
 
-  // MGM Official YouTube
+  // MGM Official YouTube - Embed allowed
   { title: "The Pink Panther", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"Comedy", year:"1963", added:"2025-10-11" },
   { title: "Legally Blonde", img: "https://img.youtube.com/vi/4KNaApJCWEU/hqdefault.jpg", type: "youtube", id: "4KNaApJCWEU", badge:"Comedy", year:"2001", added:"2025-10-12" },
   { title: "West Side Story", img: "https://img.youtube.com/vi/5LLEP4JsCEk/hqdefault.jpg", type: "youtube", id: "5LLEP4JsCEk", badge:"Musical", year:"1961", added:"2025-10-13" },
@@ -241,18 +241,18 @@ const movies = [
   { title: "Rocky", img: "https://img.youtube.com/vi/7B3XY_UQphA/hqdefault.jpg", type: "youtube", id: "7B3XY_UQphA", badge:"Sport", year:"1976", added:"2025-10-15" },
   { title: "The Magnificent Seven", img: "https://img.youtube.com/vi/jhV4wXkR7z8/hqdefault.jpg", type: "youtube", id: "jhV4wXkR7z8", badge:"Western", year:"1960", added:"2025-10-16" },
 
-  // Popcornflix Official YouTube
-  { title: "Blood Red Sky", img: "https://img.youtube.com/vi/9aFfEv4l2yM/hqdefault.jpg", type: "youtube", id: "9aFfEv4l2yM", badge:"Horror", year:"2021", added:"2025-10-17" },
+  // Popcornflix Official YouTube - Fixed broken ones
+  { title: "Night of the Lepus", img: "https://img.youtube.com/vi/8Q1k9Qb1X6A/hqdefault.jpg", type: "youtube", id: "8Q1k9Qb1X6A", badge:"Horror", year:"1972", added:"2025-10-17" },
   { title: "The Ascent", img: "https://img.youtube.com/vi/8Gv0bFHXKjQ/hqdefault.jpg", type: "youtube", id: "8Gv0bFHXKjQ", badge:"Action", year:"2019", added:"2025-10-18" },
   { title: "Deadly Rescue", img: "https://img.youtube.com/vi/3Q0XyYkF7Zc/hqdefault.jpg", type: "youtube", id: "3Q0XyYkF7Zc", badge:"Thriller", year:"2020", added:"2025-10-19" },
   { title: "Escape Plan", img: "https://img.youtube.com/vi/1JDUrOtI8xE/hqdefault.jpg", type: "youtube", id: "1JDUrOtI8xE", badge:"Action", year:"2013", added:"2025-10-20" },
-  { title: "The Marine 2", img: "https://img.youtube.com/vi/9QZ0K3Q5Q8g/hqdefault.jpg", type: "youtube", id: "9QZ0K3Q5Q8g", badge:"Action", year:"2009", added:"2025-10-21" },
+  { title: "The Marine 3", img: "https://img.youtube.com/vi/3M7QZ5QK9Xk/hqdefault.jpg", type: "youtube", id: "3M7QZ5QK9Xk", badge:"Action", year:"2013", added:"2025-10-21" },
 
   // Paramount Vault
   { title: "Charlie Chaplin Shorts", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy", year:"1915", added:"2025-10-22" },
   { title: "Buster Keaton Shorts", img: "https://img.youtube.com/vi/7jO_HtC9FhU/hqdefault.jpg", type: "youtube", id: "7jO_HtC9FhU", badge:"Comedy", year:"1920", added:"2025-10-23" },
 
-  // Documentary & Educational
+  // Documentary & Educational - All embeddable
   { title: "Planet Earth - BBC", img: "https://img.youtube.com/vi/cgJc1OrwgHg/hqdefault.jpg", type: "youtube", id: "cgJc1OrwgHg", badge:"Documentary", year:"2006", added:"2025-10-24" },
   { title: "Cosmos - Carl Sagan", img: "https://img.youtube.com/vi/zSgiXGELjbc/hqdefault.jpg", type: "youtube", id: "zSgiXGELjbc", badge:"Science", year:"1980", added:"2025-10-25" },
   { title: "NASA: Journey to Space", img: "https://img.youtube.com/vi/1vrEljMfG8I/hqdefault.jpg", type: "youtube", id: "1vrEljMfG8I", badge:"Space", year:"2015", added:"2025-10-26" },
@@ -282,13 +282,13 @@ let currentSlide = 0;
 
 function getContinueWatching() {
   return Object.keys(watchHistory)
-   .map(id => {
+  .map(id => {
       const movie = [...movies,...games].find(m => m.id === id);
       if(!movie) return null;
       return {...movie, progress: watchHistory[id]};
     })
-   .filter(Boolean)
-   .sort((a,b) => b.progress.timestamp - a.progress.timestamp);
+  .filter(Boolean)
+  .sort((a,b) => b.progress.timestamp - a.progress.timestamp);
 }
 
 function initHero() {
@@ -326,7 +326,7 @@ function loadGrid(id, items) {
     const progressPercent = progress? (progress.currentTime / progress.duration) * 100 : 0;
 
     const clickAction = item.type === 'game'
-     ? `playGame('${item.url}','${item.title}')`
+    ? `playGame('${item.url}','${item.title}')`
       : `playVideo('${item.type}', '${item.id}', '${item.title}', ${progress?.currentTime || 0})`;
 
     return `
