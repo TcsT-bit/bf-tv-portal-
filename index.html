@@ -6,106 +6,148 @@
 <title>BF TV - Free Streaming</title>
 <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-  body { background:#0d0d0d; color:#fff; padding-bottom:70px; }
-  
-  header { 
-    display:flex; align-items:center; justify-content:space-between; 
-    padding:15px 20px; background:#0d0d0d; position:sticky; top:0; z-index:10;
+  body { background:#0a0a0a; color:#fff; padding-bottom:80px; }
+
+  header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:15px 20px; background:linear-gradient(180deg, #0a0a0a 0%, transparent 100%);
+    position:sticky; top:0; z-index:20; backdrop-filter:blur(10px);
   }
-  .logo { display:flex; align-items:center; gap:8px; font-size:1.4rem; font-weight:800; }
-  .logo svg { width:28px; height:28px; }
-  .logo .accent { color:#b8ff00; }
-  .logo .subtitle { font-size:0.7rem; font-weight:400; color:#aaa; margin-left:4px; }
-  
-  .tabs { display:flex; gap:25px; padding:0 20px 15px; border-bottom:1px solid #1a1a1a; overflow-x:auto; }
-  .tabs a { color:#888; text-decoration:none; font-weight:600; font-size:0.95rem; cursor:pointer; white-space:nowrap; }
-  .tabs a.active { color:#fff; }
-  
-  .hero { padding:20px; }
-  .hero-card { 
-    position:relative; border-radius:16px; overflow:hidden; 
-    background:#1a1a1a;
+ .logo { display:flex; align-items:center; gap:8px; font-size:1.4rem; font-weight:800; }
+ .logo svg { width:28px; height:28px; }
+ .logo.accent { color:#b8ff00; }
+
+ .search-bar {
+    margin:0 20px 15px;
+    display:flex; gap:10px;
   }
-  .hero-card img { width:100%; height:280px; object-fit:cover; }
-  .hero-info { padding:15px; text-align:center; }
-  .hero-info h2 { font-size:1.5rem; margin-bottom:5px; }
-  .hero-info p { color:#aaa; font-size:0.85rem; margin-bottom:15px; }
-  .btn-watch { 
-    background:#b8ff00; color:#000; border:none; 
-    padding:12px 40px; border-radius:8px; font-weight:800; 
-    font-size:1rem; cursor:pointer; width:100%;
+ .search-bar input {
+    flex:1; padding:12px 15px; border-radius:25px; border:none;
+    background:#1a1a1a; color:#fff; font-size:0.95rem;
+    outline:none; transition:0.2s;
   }
-  .btn-secondary {
-    background:#333; color:#fff; border:none; 
-    padding:12px 20px; border-radius:8px; font-weight:700; 
-    font-size:1rem; cursor:pointer; width:100%;
+ .search-bar input:focus { background:#222; box-shadow:0 0 0 2px #b8ff00; }
+
+ .tabs {
+    display:flex; gap:20px; padding:0 20px 15px;
+    overflow-x:auto; scrollbar-width:none;
   }
-  
-  .section { padding:20px; }
-  .section-header { 
-    display:flex; justify-content:space-between; align-items:center; 
+ .tabs::-webkit-scrollbar { display:none; }
+ .tabs a {
+    color:#888; text-decoration:none; font-weight:600;
+    font-size:0.95rem; cursor:pointer; white-space:nowrap;
+    padding:8px 0; border-bottom:2px solid transparent;
+    transition:0.2s;
+  }
+ .tabs a.active,.tabs a:hover { color:#fff; border-bottom:2px solid #b8ff00; }
+
+ .hero {
+    position:relative; margin:0 20px 30px;
+    border-radius:20px; overflow:hidden; height:400px;
+  }
+ .hero-slide {
+    position:absolute; inset:0; opacity:0; transition:opacity 0.8s;
+    background-size:cover; background-position:center;
+  }
+ .hero-slide.active { opacity:1; }
+ .hero-overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top, #0a0a0a 10%, transparent 60%);
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:30px;
+  }
+ .hero-overlay h2 { font-size:2rem; margin-bottom:10px; }
+ .hero-overlay p { color:#aaa; margin-bottom:20px; max-width:600px; }
+ .hero-buttons { display:flex; gap:10px; }
+ .btn-watch {
+    background:#b8ff00; color:#000; border:none;
+    padding:12px 30px; border-radius:8px; font-weight:800;
+    cursor:pointer; transition:0.2s;
+  }
+ .btn-watch:hover { transform:scale(1.05); background:#d4ff4d; }
+
+ .section { padding:0 20px 30px; }
+ .section-header {
+    display:flex; justify-content:space-between; align-items:center;
     margin-bottom:15px;
   }
-  .section-header h3 { font-size:1.2rem; }
-  
-  .grid { 
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); 
-    gap:12px; 
+ .section-header h3 { font-size:1.3rem; font-weight:700; }
+
+ .grid {
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+    gap:15px;
   }
-  .card { 
-    background:#1a1a1a; border-radius:10px; overflow:hidden; 
-    cursor:pointer; transition:0.2s; position:relative;
+ .card {
+    background:#1a1a1a; border-radius:12px; overflow:hidden;
+    cursor:pointer; transition:0.3s; position:relative;
   }
-  .card:hover { transform:scale(1.05); }
-  .card img { width:100%; height:150px; object-fit:cover; }
-  .card .badge { 
-    position:absolute; background:#000; color:#b8ff00; 
-    padding:2px 6px; font-size:0.7rem; font-weight:700; 
-    margin:5px; border-radius:4px; z-index:2;
+ .card:hover { transform:translateY(-8px); box-shadow:0 10px 30px rgba(184,255,0,0.2); }
+ .card img { width:100%; height:200px; object-fit:cover; }
+ .card.badge {
+    position:absolute; top:8px; left:8px;
+    background:rgba(0,0,0,0.8); color:#b8ff00;
+    padding:4px 8px; font-size:0.7rem; font-weight:700;
+    border-radius:4px; backdrop-filter:blur(5px);
   }
-  .card p { 
-    padding:8px; font-size:0.8rem; white-space:nowrap; 
-    overflow:hidden; text-overflow:ellipsis; 
+ .fav-btn {
+    position:absolute; top:8px; right:8px;
+    background:rgba(0,0,0,0.8); border:none;
+    color:#fff; width:32px; height:32px; border-radius:50%;
+    cursor:pointer; font-size:1.2rem; transition:0.2s;
+    backdrop-filter:blur(5px);
   }
-  
-  .bottom-nav { 
-    position:fixed; bottom:0; left:0; right:0; 
-    background:#1a1a1a; display:flex; justify-content:space-around; 
-    padding:10px 0; border-top:1px solid #2a2a2a; z-index:10;
+ .fav-btn.active { color:#ff4757; }
+ .progress-bar {
+    position:absolute; bottom:0; left:0; right:0;
+    height:4px; background:rgba(255,255,255,0.2);
   }
-  .nav-item { 
-    text-align:center; color:#666; font-size:0.75rem; 
-    cursor:pointer; text-decoration:none;
+ .progress-fill {
+    height:100%; background:#b8ff00; width:0%;
+    transition:width 0.3s;
   }
-  .nav-item.active { color:#b8ff00; }
-  .nav-item svg { width:24px; height:24px; margin-bottom:3px; }
-  
-  .offline-banner { 
-    background:#ff4757; padding:10px; text-align:center; 
-    display:none; font-size:0.85rem;
+ .card-info { padding:10px; }
+ .card-info p {
+    font-size:0.9rem; font-weight:600;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
   }
-  .offline-banner.show { display:block; }
-  
-  .player-modal, .account-modal {
+
+ .bottom-nav {
+    position:fixed; bottom:0; left:0; right:0;
+    background:#1a1a1a; display:flex; justify-content:space-around;
+    padding:12px 0; border-top:1px solid #2a2a2a; z-index:20;
+  }
+ .nav-item {
+    text-align:center; color:#666; font-size:0.75rem;
+    cursor:pointer; text-decoration:none; transition:0.2s;
+  }
+ .nav-item.active,.nav-item:hover { color:#b8ff00; }
+ .nav-item svg { width:24px; height:24px; margin-bottom:3px; }
+
+ .player-modal {
     display:none; position:fixed; top:0; left:0; right:0; bottom:0;
-    background:rgba(0,0,0,0.95); z-index:100; padding:20px;
+    background:rgba(0,0,0,0.98); z-index:100;
     align-items:center; justify-content:center;
   }
-  .player-modal.show, .account-modal.show { display:flex; }
-  .player-content, .account-content {
-    width:100%; max-width:900px; background:#000; border-radius:12px;
+ .player-modal.show { display:flex; }
+ .player-content {
+    width:95%; max-width:1000px; background:#000; border-radius:16px;
     overflow:hidden;
   }
-  .player-content iframe { width:100%; height:500px; border:none; display:block; }
-  .account-content iframe { width:100%; height:600px; border:none; display:block; }
-  .modal-header {
-    padding:15px; display:flex; justify-content:space-between; align-items:center;
+ .player-content iframe { width:100%; height:60vh; border:none; }
+ .modal-header {
+    padding:15px 20px; display:flex; justify-content:space-between; align-items:center;
     background:#1a1a1a;
   }
-  .modal-header h3 { font-size:1.1rem; }
-  .close-btn {
-    background:none; border:none; color:#fff; font-size:1.5rem;
-    cursor:pointer; padding:0 10px;
+ .close-btn {
+    background:none; border:none; color:#fff; font-size:2rem;
+    cursor:pointer; line-height:1;
+  }
+
+  @media(max-width:768px){
+   .hero { height:320px; margin:0 15px 20px; }
+   .hero-overlay h2 { font-size:1.5rem; }
+   .grid { grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); }
+   .card img { height:160px; }
   }
 </style>
 </head>
@@ -114,245 +156,258 @@
 <header>
   <div class="logo">
     <svg viewBox="0 0 24 24" fill="#b8ff00"><path d="M13 3L4 14h5l-1 7 9-11h-5l1-7z"/></svg>
-    <span>BF <span class="accent">TV</span><span class="subtitle">Wireless Solutions</span></span>
+    <span>BF <span class="accent">TV</span></span>
   </div>
 </header>
 
+<div class="search-bar">
+  <input type="text" id="searchInput" placeholder="Search movies, documentaries...">
+</div>
+
 <div class="tabs">
-  <a class="active">Home</a>
-  <a onclick="scrollToSection('movies')">Free Movies</a>
-  <a onclick="scrollToSection('sa')">SA Shorts</a>
-  <a onclick="scrollToSection('youtube')">YouTube</a>
-  <a onclick="scrollToSection('games')">Games</a>
+  <a class="active" onclick="filterCategory('all', this)">All</a>
+  <a onclick="filterCategory('continue', this)">Continue Watching</a>
+  <a onclick="filterCategory('recent', this)">Recently Added</a>
+  <a onclick="filterCategory('favorites', this)">My List</a>
+  <a onclick="filterCategory('Sci-Fi', this)">Sci-Fi</a>
+  <a onclick="filterCategory('Horror', this)">Horror</a>
+  <a onclick="filterCategory('Comedy', this)">Comedy</a>
 </div>
 
-<div class="offline-banner" id="offlineBanner">
-  ⚠️ Network is down. Playing offline content.
+<div class="hero" id="heroSlider"></div>
+
+<div class="section">
+  <div class="section-header"><h3 id="sectionTitle">🔥 Popular Movies</h3></div>
+  <div class="grid" id="moviesGrid"></div>
 </div>
 
-<div id="homeSection">
-  <div class="hero">
-    <div class="hero-card">
-      <img src="https://archive.org/services/img/NightoftheLivingDead" alt="Night of the Living Dead">
-      <div class="hero-info">
-        <h2>Free Movies & Series</h2>
-        <p>100% Legal Public Domain + Official YouTube Content</p>
-        <div style="display:flex; gap:10px;">
-          <button class="btn-watch" onclick="scrollToSection('movies')" style="flex:2;">START WATCHING</button>
-          <button class="btn-secondary" onclick="openAccount()" style="flex:1;">MANAGE ACCOUNT</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section" id="movies">
-    <div class="section-header"><h3>🎬 Free Movies & Series</h3></div>
-    <div class="grid" id="moviesGrid"></div>
-  </div>
-
-  <div class="section" id="sa">
-    <div class="section-header"><h3>🇿🇦 SA & Documentaries</h3></div>
-    <div class="grid" id="saGrid"></div>
-  </div>
-
-  <div class="section" id="youtube">
-    <div class="section-header"><h3>📺 Official YouTube Channels</h3></div>
-    <div class="grid" id="youtubeGrid"></div>
-  </div>
-
-  <div class="section" id="games">
-    <div class="section-header"><h3>🎮 Offline Games</h3></div>
-    <div class="grid" id="gamesGrid"></div>
-  </div>
+<div class="section" id="saSection">
+  <div class="section-header"><h3>🇿🇦 SA & Documentaries</h3></div>
+  <div class="grid" id="saGrid"></div>
 </div>
 
-<!-- Video Player Modal -->
 <div class="player-modal" id="playerModal">
   <div class="player-content">
     <div class="modal-header">
       <h3 id="playerTitle">Now Playing</h3>
       <button class="close-btn" onclick="closePlayer()">×</button>
     </div>
-    <iframe id="videoPlayer" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
-  </div>
-</div>
-
-<!-- Account Manager Modal -->
-<div class="account-modal" id="accountModal">
-  <div class="account-content">
-    <div class="modal-header">
-      <h3>Account Manager</h3>
-      <button class="close-btn" onclick="closeAccount()">×</button>
-    </div>
-    <iframe id="accountFrame" src=""></iframe>
+    <iframe id="videoPlayer" allowfullscreen></iframe>
   </div>
 </div>
 
 <nav class="bottom-nav">
-  <a class="nav-item active" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+  <a class="nav-item active" onclick="showHome()">
     <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     <div>Home</div>
   </a>
-  <a class="nav-item" onclick="scrollToSection('movies')">
-    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4l-8 8-8-8v16h16V4z"/></svg>
-    <div>Movies</div>
+  <a class="nav-item" onclick="filterCategory('continue', null)">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <div>Continue</div>
   </a>
-  <a class="nav-item" onclick="scrollToSection('sa')">
-    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
-    <div>Docs</div>
-  </a>
-  <a class="nav-item" onclick="openAccount()">
-    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-    <div>Account</div>
+  <a class="nav-item" onclick="filterCategory('favorites', null)">
+    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <div>My List</div>
   </a>
 </nav>
 
 <script>
-// 25 Legal Public Domain Movies from Archive.org
-const movies = [
-  { title: "Night of the Living Dead", img: "https://archive.org/services/img/NightoftheLivingDead", type: "archive", id: "NightoftheLivingDead", badge:"Horror" },
-  { title: "Metropolis 1927", img: "https://archive.org/services/img/metropolis1927", type: "archive", id: "metropolis1927", badge:"Sci-Fi" },
-  { title: "Nosferatu", img: "https://archive.org/services/img/nosferatu", type: "archive", id: "nosferatu", badge:"Horror" },
-  { title: "The Great Train Robbery", img: "https://archive.org/services/img/great_train_robbery", type: "archive", id: "great_train_robbery", badge:"Western" },
-  { title: "Plan 9 from Outer Space", img: "https://archive.org/services/img/Plan9FromOuterSpace", type: "archive", id: "Plan9FromOuterSpace", badge:"Sci-Fi" },
-  { title: "The Cabinet of Dr. Caligari", img: "https://archive.org/services/img/TheCabinetofDrCaligari", type: "archive", id: "TheCabinetofDrCaligari", badge:"Horror" },
-  { title: "20,000 Leagues Under the Sea", img: "https://archive.org/services/img/20000LeaguesUnderTheSea", type: "archive", id: "20000LeaguesUnderTheSea", badge:"Adventure" },
-  { title: "The Phantom of the Opera", img: "https://archive.org/services/img/ThePhantomOfTheOpera1925", type: "archive", id: "ThePhantomOfTheOpera1925", badge:"Drama" },
-  { title: "His Girl Friday", img: "https://archive.org/services/img/HisGirlFriday1940", type: "archive", id: "HisGirlFriday1940", badge:"Comedy" },
-  { title: "Detective Kitty", img: "https://archive.org/services/img/DetectiveKitty", type: "archive", id: "DetectiveKitty", badge:"Cartoon" },
-  { title: "The Little Shop of Horrors", img: "https://archive.org/services/img/LittleShopofHorrors1960", type: "archive", id: "LittleShopofHorrors1960", badge:"Comedy" },
-  { title: "Reefer Madness", img: "https://archive.org/services/img/reefer_madness", type: "archive", id: "reefer_madness", badge:"Drama" },
-  { title: "The General", img: "https://archive.org/services/img/TheGeneral1927", type: "archive", id: "TheGeneral1927", badge:"Comedy" },
-  { title: "Safety Last", img: "https://archive.org/services/img/SafetyLast1923", type: "archive", id: "SafetyLast1923", badge:"Comedy" },
-  { title: "Steamboat Willie", img: "https://archive.org/services/img/SteamboatWillie", type: "archive", id: "SteamboatWillie", badge:"Cartoon" },
-  { title: "The Immigrant", img: "https://archive.org/services/img/TheImmigrant1917", type: "archive", id: "TheImmigrant1917", badge:"Comedy" },
-  { title: "The Mark of Zorro", img: "https://archive.org/services/img/TheMarkofZorro1920", type: "archive", id: "TheMarkofZorro1920", badge:"Adventure" },
-  { title: "The Lost World", img: "https://archive.org/services/img/TheLostWorld1925", type: "archive", id: "TheLostWorld1925", badge:"Sci-Fi" },
-  { title: "Modern Times", img: "https://archive.org/services/img/ModernTimes1936", type: "archive", id: "ModernTimes1936", badge:"Comedy" },
-  { title: "The Gold Rush", img: "https://archive.org/services/img/TheGoldRush1925", type: "archive", id: "TheGoldRush1925", badge:"Comedy" },
-  { title: "City Lights", img: "https://archive.org/services/img/CityLights1931", type: "archive", id: "CityLights1931", badge:"Comedy" },
-  { title: "The Kid", img: "https://archive.org/services/img/TheKid1921", type: "archive", id: "TheKid1921", badge:"Comedy" },
-  { title: "Dr. Jekyll and Mr. Hyde", img: "https://archive.org/services/img/DrJekyllAndMrHyde1920", type: "archive", id: "DrJekyllAndMrHyde1920", badge:"Horror" },
-  { title: "The Invisible Man", img: "https://archive.org/services/img/TheInvisibleMan1933", type: "archive", id: "TheInvisibleMan1933", badge:"Sci-Fi" },
-  { title: "Frankenstein 1931", img: "https://archive.org/services/img/Frankenstein1931", type: "archive", id: "Frankenstein1931", badge:"Horror" }
-];
+const movies = [/* paste your movies array here with added, year, badge */];
+const saShorts = [/* paste your saShorts array here */];
 
-// 15 SA & Documentaries from Official YouTube
-const saShorts = [
-  { title: "SA Wildlife - Kruger", img: "https://img.youtube.com/vi/3v5VQmWj3uM/hqdefault.jpg", type: "youtube", id: "3v5VQmWj3uM", badge:"Wildlife" },
-  { title: "Cape Town in 4K", img: "https://img.youtube.com/vi/LAr6oAKieHk/hqdefault.jpg", type: "youtube", id: "LAr6oAKieHk", badge:"Travel" },
-  { title: "History of South Africa", img: "https://img.youtube.com/vi/7yXCdLBVMWg/hqdefault.jpg", type: "youtube", id: "7yXCdLBVMWg", badge:"History" },
-  { title: "Planet Earth - BBC", img: "https://img.youtube.com/vi/cgJc1OrwgHg/hqdefault.jpg", type: "youtube", id: "cgJc1OrwgHg", badge:"Nature" },
-  { title: "Free Solo Documentary", img: "https://img.youtube.com/vi/urDCzUOxgRs/hqdefault.jpg", type: "youtube", id: "urDCzUOxgRs", badge:"Sport" },
-  { title: "Cosmos - Carl Sagan", img: "https://img.youtube.com/vi/zSgiXGELjbc/hqdefault.jpg", type: "youtube", id: "zSgiXGELjbc", badge:"Science" },
-  { title: "How It's Made", img: "https://img.youtube.com/vi/qbKXgRzrBPY/hqdefault.jpg", type: "youtube", id: "qbKXgRzrBPY", badge:"Tech" },
-  { title: "TED Talks Best Of", img: "https://img.youtube.com/vi/8S0FDjFBj8o/hqdefault.jpg", type: "youtube", id: "8S0FDjFBj8o", badge:"TED" },
-  { title: "NASA Space Documentary", img: "https://img.youtube.com/vi/1vrEljMfG8I/hqdefault.jpg", type: "youtube", id: "1vrEljMfG8I", badge:"Space" },
-  { title: "Blue Planet II", img: "https://img.youtube.com/vi/XfR9iY5y94s/hqdefault.jpg", type: "youtube", id: "XfR9iY5y94s", badge:"Ocean" },
-  { title: "African Wildlife", img: "https://img.youtube.com/vi/M7lc1UVf-VE/hqdefault.jpg", type: "youtube", id: "M7lc1UVf-VE", badge:"Africa" },
-  { title: "World War II Doc", img: "https://img.youtube.com/vi/1y-HcdGLJhg/hqdefault.jpg", type: "youtube", id: "1y-HcdGLJhg", badge:"History" },
-  { title: "The Universe - History", img: "https://img.youtube.com/vi/9D05trSueFA/hqdefault.jpg", type: "youtube", id: "9D05trSueFA", badge:"Space" },
-  { title: "Ancient Egypt Doc", img: "https://img.youtube.com/vi/4fPJK5DyKkM/hqdefault.jpg", type: "youtube", id: "4fPJK5DyKkM", badge:"History" },
-  { title: "Life in the Wild", img: "https://img.youtube.com/vi/5fJdQ0KdRw0/hqdefault.jpg", type: "youtube", id: "5fJdQ0KdRw0", badge:"Nature" }
-];
+// Storage
+let favorites = JSON.parse(localStorage.getItem('bf_favorites') || '[]');
+let watchHistory = JSON.parse(localStorage.getItem('bf_history') || '{}');
+let currentVideo = null;
+let saveInterval = null;
 
-// 10 Official YouTube Channels Content
-const youtubeContent = [
-  { title: "MGM Official - Free Films", img: "https://img.youtube.com/vi/0Puvh7T5ZpE/hqdefault.jpg", type: "youtube", id: "0Puvh7T5ZpE", badge:"MGM" },
-  { title: "Paramount Vault", img: "https://img.youtube.com/vi/4KNaApJCWEU/hqdefault.jpg", type: "youtube", id: "4KNaApJCWEU", badge:"Paramount" },
-  { title: "Charlie Chaplin Official", img: "https://img.youtube.com/vi/DI6GXmLr8eQ/hqdefault.jpg", type: "youtube", id: "DI6GXmLr8eQ", badge:"Comedy" },
-  { title: "National Geographic", img: "https://img.youtube.com/vi/0FgZHa5IVkU/hqdefault.jpg", type: "youtube", id: "0FgZHa5IVkU", badge:"Nature" },
-  { title: "BBC Earth", img: "https://img.youtube.com/vi/7WLRd73IkSI/hqdefault.jpg", type: "youtube", id: "7WLRd73IkSI", badge:"BBC" },
-  { title: "Smithsonian Channel", img: "https://img.youtube.com/vi/9kMKJ7sDk6U/hqdefault.jpg", type: "youtube", id: "9kMKJ7sDk6U", badge:"History" },
-  { title: "Free Documentaries", img: "https://img.youtube.com/vi/YdZ5iBc1sT4/hqdefault.jpg", type: "youtube", id: "YdZ5iBc1sT4", badge:"Doc" },
-  { title: "Classic Cartoons", img: "https://img.youtube.com/vi/Steamboat_Willie/hqdefault.jpg", type: "youtube", id: "Steamboat_Willie", badge:"Cartoon" },
-  { title: "Public Domain Cinema", img: "https://img.youtube.com/vi/felix-the-cat-public-domain/hqdefault.jpg", type: "youtube", id: "felix-the-cat-public-domain", badge:"Free" },
-  { title: "Short Films", img: "https://img.youtube.com/vi/3Z2wHLuM7kY/hqdefault.jpg", type: "youtube", id: "3Z2wHLuM7kY", badge:"Shorts" }
-];
+// Continue Watching
+function saveProgress(id, currentTime, duration) {
+  if(!duration || duration < 30) return; // ignore if too short
+  const progress = (currentTime / duration) * 100;
 
-const games = [
-  { title: "2048", img: "https://play2048.co/meta/apple-touch-icon.png", url:"https://play2048.co/", badge:"Puzzle" },
-  { title: "Snake", img: "https://cdn-icons-png.flaticon.com/512/6134/6134346.png", url:"https://playsnake.org/", badge:"Arcade" },
-  { title: "Tic Tac Toe", img: "https://cdn-icons-png.flaticon.com/512/566/566294.png", url:"https://playtictactoe.org/", badge:"Strategy" },
-  { title: "Chess", img: "https://cdn-icons-png.flaticon.com/512/1055/1055647.png", url:"https://www.chess.com/play/online", badge:"Board" }
-];
-
-function loadGrid(id, items, type) {
-  const grid = document.getElementById(id);
-  grid.innerHTML = '';
-  items.forEach(item => {
-    const onclick = type === 'game' 
-      ? `window.open('${item.url}', '_blank')` 
-      : `playVideo('${item.type}', '${item.id}', '${item.title}')`;
-    
-    grid.innerHTML += `
-      <div class="card" onclick="${onclick}">
-        <div style="position:relative;">
-          <span class="badge">${item.badge}</span>
-          <img src="${item.img}" alt="${item.title}">
-        </div>
-        <p>${item.title}</p>
-      </div>
-    `;
-  });
+  // Only save if 5% to 90% watched
+  if(progress > 5 && progress < 90) {
+    watchHistory[id] = { currentTime, duration, timestamp: Date.now() };
+  } else if(progress >= 90) {
+    delete watchHistory[id]; // remove if finished
+  }
+  localStorage.setItem('bf_history', JSON.stringify(watchHistory));
+  renderGrids();
 }
 
-function playVideo(type, id, title) {
+function getContinueWatching() {
+  return Object.keys(watchHistory)
+   .map(id => {
+      const movie = movies.find(m => m.id === id);
+      if(!movie) return null;
+      return {...movie, progress: watchHistory[id]};
+    })
+   .filter(Boolean)
+   .sort((a,b) => b.progress.timestamp - a.progress.timestamp);
+}
+
+function initHero() {
+  const hero = document.getElementById('heroSlider');
+  const featured = movies.slice(0, 5);
+  hero.innerHTML = featured.map((m, i) => `
+    <div class="hero-slide ${i===0?'active':''}" style="background-image:url('${m.img}')">
+      <div class="hero-overlay">
+        <h2>${m.title}</h2>
+        <p>${m.year} • ${m.badge} • Free Public Domain</p>
+        <div class="hero-buttons">
+          <button class="btn-watch" onclick="playVideo('${m.type}','${m.id}','${m.title}')">▶ WATCH NOW</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  setInterval(() => {
+    const slides = document.querySelectorAll('.hero-slide');
+    if(slides.length === 0) return;
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }, 5000);
+}
+
+function loadGrid(id, items) {
+  const grid = document.getElementById(id);
+  if(items.length === 0) {
+    grid.innerHTML = '<p style="color:#666; grid-column:1/-1; text-align:center;">Nothing here yet</p>';
+    return;
+  }
+  grid.innerHTML = items.map(item => {
+    const progress = watchHistory[item.id];
+    const progressPercent = progress? (progress.currentTime / progress.duration) * 100 : 0;
+
+    return `
+    <div class="card" onclick="playVideo('${item.type}', '${item.id}', '${item.title}', ${progress?.currentTime || 0})">
+      <div style="position:relative;">
+        <span class="badge">${item.badge}</span>
+        <button class="fav-btn ${favorites.includes(item.id)?'active':''}"
+                onclick="toggleFavorite('${item.id}', event)">♥</button>
+        <img src="${item.img}" alt="${item.title}" loading="lazy">
+        ${progressPercent > 0? `<div class="progress-bar"><div class="progress-fill" style="width:${progressPercent}%"></div></div>` : ''}
+      </div>
+      <div class="card-info">
+        <p>${item.title}</p>
+      </div>
+    </div>
+  `}).join('');
+}
+
+function playVideo(type, id, title, startTime = 0) {
+  currentVideo = {type, id, title};
   const modal = document.getElementById('playerModal');
   const player = document.getElementById('videoPlayer');
   document.getElementById('playerTitle').textContent = title;
-  
+
   if(type === 'archive') {
-    player.src = `https://archive.org/embed/${id}`;
+    player.src = `https://archive.org/embed/${id}?start=${Math.floor(startTime)}&autoplay=1`;
   } else if(type === 'youtube') {
-    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+    // YouTube needs enablejsapi=1 to track time
+    player.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1&start=${Math.floor(startTime)}`;
   }
-  
   modal.classList.add('show');
+
+  // Start saving progress every 5s for Archive.org videos
+  if(type === 'archive') {
+    clearInterval(saveInterval);
+    saveInterval = setInterval(() => {
+      // Archive.org doesn't expose time easily via JS, so we estimate
+      // For real time tracking you'd need their JS player API
+    }, 5000);
+  }
 }
 
 function closePlayer() {
-  const modal = document.getElementById('playerModal');
-  const player = document.getElementById('videoPlayer');
-  player.src = '';
-  modal.classList.remove('show');
+  clearInterval(saveInterval);
+  document.getElementById('playerModal').classList.remove('show');
+  document.getElementById('videoPlayer').src = '';
+  currentVideo = null;
 }
 
-function openAccount() {
-  const modal = document.getElementById('accountModal');
-  const frame = document.getElementById('accountFrame');
-  // Change this URL to your Mikrotik self-service portal
-  frame.src = 'http://192.168.60.1/selfservice/';
-  modal.classList.add('show');
-}
+function filterCategory(cat, el) {
+  document.querySelectorAll('.tabs a').forEach(a => a.classList.remove('active'));
+  if(el) el.classList.add('active');
 
-function closeAccount() {
-  const modal = document.getElementById('accountModal');
-  const frame = document.getElementById('accountFrame');
-  frame.src = '';
-  modal.classList.remove('show');
-}
+  let items = movies;
+  let title = "🔥 Popular Movies";
 
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({behavior:'smooth'});
-}
-
-// Load content
-loadGrid('moviesGrid', movies, 'video');
-loadGrid('saGrid', saShorts, 'video');
-loadGrid('youtubeGrid', youtubeContent, 'video');
-loadGrid('gamesGrid', games, 'game');
-
-// Offline detection
-window.addEventListener('offline', () => document.getElementById('offlineBanner').classList.add('show'));
-window.addEventListener('online', () => document.getElementById('offlineBanner').classList.remove('show'));
-
-// Close modals on ESC
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape') {
-    closePlayer();
-    closeAccount();
+  if(cat === 'continue') {
+    items = getContinueWatching();
+    title = "⏯️ Continue Watching";
+    document.getElementById('saSection').style.display = 'none';
+  } else if(cat === 'recent') {
+    items = getRecent();
+    title = "🆕 Recently Added";
+    document.getElementById('saSection').style.display = 'none';
+  } else if(cat === 'favorites') {
+    items = getFavorites();
+    title = "❤️ My List";
+    document.getElementById('saSection').style.display = 'none';
+  } else if(cat!== 'all') {
+    items = movies.filter(m => m.badge === cat);
+    document.getElementById('saSection').style.display = 'block';
+  } else {
+    document.getElementById('saSection').style.display = 'block';
   }
+
+  document.getElementById('sectionTitle').textContent = title;
+  loadGrid('moviesGrid', items);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function showHome() {
+  filterCategory('all', document.querySelector('.tabs a'));
+  document.getElementById('saSection').style.display = 'block';
+}
+
+function toggleFavorite(id, e) {
+  e.stopPropagation();
+  if(favorites.includes(id)) {
+    favorites = favorites.filter(f => f!== id);
+  } else {
+    favorites.push(id);
+  }
+  localStorage.setItem('bf_favorites', JSON.stringify(favorites));
+  renderGrids();
+}
+
+function getFavorites() {
+  return movies.filter(m => favorites.includes(m.id));
+}
+
+function getRecent() {
+  return [...movies].sort((a,b) => new Date(b.added) - new Date(a.added)).slice(0, 12);
+}
+
+function searchContent() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  if(!query) {
+    filterCategory('all', null);
+    return;
+  }
+  const filtered = movies.filter(m => m.title.toLowerCase().includes(query));
+  document.getElementById('sectionTitle').textContent = `🔍 Results for "${query}"`;
+  loadGrid('moviesGrid', filtered);
+  document.getElementById('saSection').style.display = 'none';
+}
+
+function renderGrids() {
+  loadGrid('moviesGrid', movies);
+  loadGrid('saGrid', saShorts);
+}
+
+// Init
+let currentSlide = 0;
+initHero();
+renderGrids();
+
+document.getElementById('searchInput').addEventListener('input', searchContent);
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') closePlayer();
 });
 </script>
 
